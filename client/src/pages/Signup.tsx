@@ -30,10 +30,11 @@ export default function Signup() {
 
   const signupMutation = trpc.auth.signup.useMutation({
     onSuccess: async () => {
-      // Invalidate and refetch user data before navigating
-      await utils.auth.getCurrentUser.invalidate();
       toast.success("Conta criada com sucesso! Redirecionando...");
-      setTimeout(() => navigate("/dashboard"), 1000);
+      // Force page reload to ensure authentication state is updated
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 1000);
     },
     onError: (error: any) => {
       toast.error(error.message || "Erro ao criar conta");

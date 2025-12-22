@@ -27,10 +27,9 @@ export default function Login() {
 
   const loginMutation = trpc.auth.login.useMutation({
     onSuccess: async () => {
-      // Invalidate and refetch user data before navigating
-      await utils.auth.getCurrentUser.invalidate();
       toast.success("Login realizado com sucesso!");
-      navigate("/dashboard");
+      // Force page reload to ensure authentication state is updated
+      window.location.href = "/dashboard";
     },
     onError: (error: any) => {
       toast.error(error.message || "Email ou senha incorretos");
