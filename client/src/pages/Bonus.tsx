@@ -1,8 +1,8 @@
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-  ChevronLeft, 
+import {
+  ChevronLeft,
   Gift,
   Download,
   CheckCircle2,
@@ -10,6 +10,11 @@ import {
 } from "lucide-react";
 import { Link, useParams } from "wouter";
 import { Streamdown } from "streamdown";
+import { useRef } from "react";
+import RichContentRenderer from "@/components/RichContentRenderer";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import { toast } from "sonner";
 
 const bonusContent: Record<string, {
   title: string;
@@ -59,26 +64,85 @@ Depois de analisar todos, responda:
 
 Para cada concorrente, preencha:
 
-\`\`\`
-Nome: _______________
-Site/Instagram: _______________
+**Concorrente 1:**
 
-Posicionamento: _______________
-Público-alvo: _______________
-Diferencial declarado: _______________
-Faixa de preço: _______________
-Pontos fortes: _______________
-Pontos fracos: _______________
-Oportunidade para mim: _______________
-\`\`\`
+Nome: {{input:bonus1-conc1-nome}}
+
+Site/Instagram: {{input:bonus1-conc1-site}}
+
+Posicionamento: {{textarea:bonus1-conc1-posicionamento}}
+
+Público-alvo: {{textarea:bonus1-conc1-publico}}
+
+Diferencial declarado: {{textarea:bonus1-conc1-diferencial}}
+
+Faixa de preço: {{input:bonus1-conc1-preco}}
+
+Pontos fortes: {{textarea:bonus1-conc1-fortes}}
+
+Pontos fracos: {{textarea:bonus1-conc1-fracos}}
+
+Oportunidade para mim: {{textarea:bonus1-conc1-oportunidade}}
+
+---
+
+**Concorrente 2:**
+
+Nome: {{input:bonus1-conc2-nome}}
+
+Site/Instagram: {{input:bonus1-conc2-site}}
+
+Posicionamento: {{textarea:bonus1-conc2-posicionamento}}
+
+Público-alvo: {{textarea:bonus1-conc2-publico}}
+
+Diferencial declarado: {{textarea:bonus1-conc2-diferencial}}
+
+Faixa de preço: {{input:bonus1-conc2-preco}}
+
+Pontos fortes: {{textarea:bonus1-conc2-fortes}}
+
+Pontos fracos: {{textarea:bonus1-conc2-fracos}}
+
+Oportunidade para mim: {{textarea:bonus1-conc2-oportunidade}}
+
+---
+
+**Concorrente 3:**
+
+Nome: {{input:bonus1-conc3-nome}}
+
+Site/Instagram: {{input:bonus1-conc3-site}}
+
+Posicionamento: {{textarea:bonus1-conc3-posicionamento}}
+
+Público-alvo: {{textarea:bonus1-conc3-publico}}
+
+Diferencial declarado: {{textarea:bonus1-conc3-diferencial}}
+
+Faixa de preço: {{input:bonus1-conc3-preco}}
+
+Pontos fortes: {{textarea:bonus1-conc3-fortes}}
+
+Pontos fracos: {{textarea:bonus1-conc3-fracos}}
+
+Oportunidade para mim: {{textarea:bonus1-conc3-oportunidade}}
 
 ### Conclusão da Análise
 
 Após analisar todos os concorrentes, defina:
 
 1. **Minha oportunidade única:** O que posso oferecer que ninguém mais oferece?
+
+{{textarea:bonus1-oportunidade-unica}}
+
 2. **Meu público específico:** Quem está mal atendido pelos concorrentes?
+
+{{textarea:bonus1-publico-especifico}}
+
 3. **Meu diferencial:** Como meu MTU preenche essa lacuna?
+
+{{textarea:bonus1-meu-diferencial}}
 
 > **Dica:** Use o Assistente IA para ajudar a identificar padrões e oportunidades na sua análise.`
   },
@@ -901,24 +965,34 @@ Justificativa clara: 'Agora inclui X, por isso investimento é Y.'
 ### Exercício de Decisão
 
 **PASSO 1:** Qual seu piso mínimo?
-(Use cálculo da Parte 3): R$ _____________
+(Use cálculo da Parte 3): R$ {{input:bonus3-piso-minimo}}
 
 **PASSO 2:** Qual modelo você vai usar?
-- Modelo 1: Sessão premium (R$ _____ /sessão)
-- Modelo 2: Pacote transformação (R$ _____ / _____ sessões)
-- Modelo 3: Valor/Resultado (R$ _____ baseado em ROI)
+
+{{checkbox:bonus3-modelo-1:Modelo 1: Sessão premium}} Valor por sessão: R$ {{input:bonus3-modelo1-valor}}
+
+{{checkbox:bonus3-modelo-2:Modelo 2: Pacote transformação}} Valor total: R$ {{input:bonus3-modelo2-valor}} para {{input:bonus3-modelo2-sessoes}} sessões
+
+{{checkbox:bonus3-modelo-3:Modelo 3: Valor/Resultado}} Valor: R$ {{input:bonus3-modelo3-valor}} baseado em ROI
 
 **PASSO 3:** Seu preço está acima do piso mínimo?
-- [ ] Sim  
-- [ ] Não (se não, ajuste IMEDIATAMENTE)
+
+{{checkbox:bonus3-acima-piso:Sim, meu preço está acima do piso mínimo}}
+
+{{checkbox:bonus3-abaixo-piso:Não, preciso ajustar IMEDIATAMENTE}}
 
 **PASSO 4:** Script de comunicação do seu preço:
 (Use estrutura da Parte 5)
 
+{{textarea:bonus3-script-preco}}
+
 **PASSO 5:** Quando você vai implementar?
-- Imediatamente (novos clientes já pagam novo preço)
-- Em 30 dias (comunicar clientes atuais)
-- Em _____ dias (data específica: ___/___/___)
+
+{{checkbox:bonus3-impl-imediato:Imediatamente (novos clientes já pagam novo preço)}}
+
+{{checkbox:bonus3-impl-30dias:Em 30 dias (comunicar clientes atuais)}}
+
+{{checkbox:bonus3-impl-custom:Em outra data}} Data específica: {{input:bonus3-impl-data}}
 
 ---
 
@@ -976,6 +1050,70 @@ export default function Bonus() {
   const params = useParams();
   const bonusId = params.id || "1";
   const bonus = bonusContent[bonusId];
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
+
+    try {
+      toast.info("Gerando PDF...");
+
+      // Scroll to top to ensure all content is visible
+      window.scrollTo(0, 0);
+
+      // Wait a bit for scroll to complete
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      const canvas = await html2canvas(contentRef.current, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+        windowWidth: 1200,
+        onclone: (clonedDoc) => {
+          const clonedElement = clonedDoc.querySelector('.prose') as HTMLElement;
+          if (clonedElement) {
+            clonedElement.style.padding = "40px";
+            clonedElement.style.maxWidth = "none";
+            clonedElement.style.margin = "0";
+            clonedElement.style.color = "#000000";
+          }
+        }
+      });
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      const safeTitle = bonus.title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+      pdf.save(`mtu-bonus-${bonusId}-${safeTitle}.pdf`);
+
+      toast.success("PDF baixado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao gerar PDF:", error);
+      toast.error("Erro ao gerar PDF. Tente novamente.");
+    }
+  };
 
   if (!bonus) {
     return (
@@ -998,24 +1136,33 @@ export default function Bonus() {
               Voltar ao Dashboard
             </Button>
           </Link>
-          
+
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
               <Gift className="h-7 w-7 text-primary" />
             </div>
-            <div>
+            <div className="flex-1">
               <span className="text-sm font-medium text-primary">Bônus Exclusivo</span>
               <h1 className="text-3xl font-display font-bold mt-1">{bonus.title}</h1>
               <p className="text-muted-foreground mt-2">{bonus.description}</p>
             </div>
+            <Button
+              onClick={handleDownloadPDF}
+              variant="outline"
+              size="sm"
+              className="gap-2 shrink-0"
+            >
+              <Download className="h-4 w-4" />
+              Baixar PDF
+            </Button>
           </div>
         </div>
 
         {/* Content */}
         <Card>
-          <CardContent className="p-8">
+          <CardContent className="p-8" ref={contentRef}>
             <div className="prose prose-neutral max-w-none">
-              <Streamdown>{bonus.content}</Streamdown>
+              <RichContentRenderer content={bonus.content} moduleId={`bonus-${bonusId}`} />
             </div>
           </CardContent>
         </Card>
@@ -1028,7 +1175,7 @@ export default function Bonus() {
               Voltar ao Dashboard
             </Link>
           </Button>
-          
+
           <Button asChild className="bg-primary hover:bg-primary/90">
             <a href="https://plataforma-mtu.onrender.com/assistente" target="_blank" rel="noopener noreferrer">
               Usar com Assistente IA
