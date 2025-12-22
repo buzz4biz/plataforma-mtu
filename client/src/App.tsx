@@ -10,7 +10,6 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Module from "./pages/Module";
 import Bonus from "./pages/Bonus";
-import Conquistas from "./pages/Conquistas";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
@@ -39,11 +38,6 @@ function Router() {
       <Route path="/bonus/:id">
         <ProtectedRoute>
           <Bonus />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/conquistas">
-        <ProtectedRoute>
-          <Conquistas />
         </ProtectedRoute>
       </Route>
       

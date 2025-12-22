@@ -12,12 +12,8 @@ import {
   ArrowRight,
   CheckCircle2,
   Circle,
-  Award,
-  Sparkles,
   Play,
-  Loader2,
-  Trophy,
-  Star
+  Loader2
 } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -87,24 +83,12 @@ const bonuses = [
   },
 ];
 
-const badgeDefinitions = [
-  { id: "iniciante", name: "Iniciante MTU", description: "Começou a jornada MTU", icon: Star, color: "bg-amber-500" },
-  { id: "diagnostico-completo", name: "Diagnóstico Completo", description: "Completou o Módulo 1", icon: Target, color: "bg-emerald-500" },
-  { id: "mecanismo-extraido", name: "Mecanismo Extraído", description: "Completou o Módulo 2", icon: BookOpen, color: "bg-blue-500" },
-  { id: "comunicador-mtu", name: "Comunicador MTU", description: "Completou o Módulo 3", icon: MessageSquare, color: "bg-purple-500" },
-  { id: "implementador", name: "Implementador", description: "Completou o Módulo 4", icon: Calendar, color: "bg-rose-500" },
-  { id: "mestre-mtu", name: "Mestre MTU", description: "Completou todos os módulos", icon: Trophy, color: "bg-gradient-to-r from-amber-500 to-yellow-400" },
-];
-
 export default function Dashboard() {
   const { data: user } = trpc.auth.me.useQuery();
   const { data: progressData, isLoading: progressLoading } = trpc.progress.getAll.useQuery(undefined, {
     enabled: !!user,
   });
   const { data: statsData, isLoading: statsLoading } = trpc.progress.getStats.useQuery(undefined, {
-    enabled: !!user,
-  });
-  const { data: badgesData, isLoading: badgesLoading } = trpc.badges.getAll.useQuery(undefined, {
     enabled: !!user,
   });
 
@@ -117,7 +101,7 @@ export default function Dashboard() {
   console.log("[Dashboard] Progress data:", progressData);
   console.log("[Dashboard] Stats data:", statsData);
   console.log("[Dashboard] Completed module IDs:", completedModuleIds);
-  console.log("[Dashboard] Loading states:", { progressLoading, statsLoading, badgesLoading });
+  console.log("[Dashboard] Loading states:", { progressLoading, statsLoading });
 
   // Encontrar módulo em andamento (com progresso mas não completo)
   const getModuleInProgress = () => {
@@ -165,10 +149,7 @@ export default function Dashboard() {
   const completedModules = statsData?.completedModules || 0;
   const totalModules = 7;
 
-  // Verificar badges conquistados
-  const earnedBadgeIds = badgesData?.map(b => b.badgeId) || [];
-
-  const isLoading = progressLoading || statsLoading || badgesLoading;
+  const isLoading = progressLoading || statsLoading;
 
   return (
     <DashboardLayout>
@@ -325,60 +306,6 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-
-        {/* Badges Preview */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Award className="h-6 w-6 text-primary" />
-                <CardTitle className="font-display">Suas Conquistas</CardTitle>
-              </div>
-              <Button variant="ghost" asChild className="text-primary">
-                <Link href="/conquistas">
-                  Ver todas
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {badgeDefinitions.slice(0, 4).map((badge) => {
-                const isEarned = earnedBadgeIds.includes(badge.id);
-                const IconComponent = badge.icon;
-                return (
-                  <div 
-                    key={badge.id} 
-                    className={`flex items-center gap-3 p-4 rounded-lg border transition-all ${
-                      isEarned 
-                        ? 'bg-primary/5 border-primary/20 shadow-sm' 
-                        : 'bg-muted/30 border-transparent opacity-60 grayscale'
-                    }`}
-                  >
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
-                      isEarned ? badge.color : 'bg-muted'
-                    }`}>
-                      <IconComponent className={`h-6 w-6 ${
-                        isEarned ? 'text-white' : 'text-muted-foreground'
-                      }`} />
-                    </div>
-                    <div className="min-w-0">
-                      <p className={`font-semibold text-sm ${
-                        isEarned ? 'text-foreground' : 'text-muted-foreground'
-                      }`}>
-                        {badge.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground line-clamp-1">
-                        {badge.description}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </DashboardLayout>
   );

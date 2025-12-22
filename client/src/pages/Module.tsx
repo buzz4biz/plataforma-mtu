@@ -3419,7 +3419,6 @@ export default function Module() {
   );
   const completeLessonMutation = trpc.progress.completeLesson.useMutation();
   const completeModuleMutation = trpc.progress.completeModule.useMutation();
-  const awardBadgeMutation = trpc.badges.award.useMutation();
   const saveExerciseMutation = trpc.exercises.save.useMutation();
   
   // Load progress from database
@@ -3480,18 +3479,6 @@ export default function Module() {
         await completeModuleMutation.mutateAsync({
           moduleId: `modulo-${moduleId}`,
         });
-        
-        // Award badge based on module
-        const badgeMap: Record<string, string> = {
-          "1": "diagnostico-completo",
-          "2": "mecanismo-extraido",
-          "3": "comunicador-mtu",
-          "4": "implementador",
-        };
-        const badgeId = badgeMap[moduleId];
-        if (badgeId) {
-          await awardBadgeMutation.mutateAsync({ badgeId });
-        }
         
         // Force refetch progress and invalidate all progress queries
         await refetchProgress();

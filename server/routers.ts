@@ -5,7 +5,7 @@ import { invokeGroq } from "./_core/groq";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
 import { getDb } from "./db";
-import { userProgress, userBadges, userExercises } from "../drizzle/schema";
+import { userProgress, userExercises } from "../drizzle/schema";
 import { eq, and } from "drizzle-orm";
 import { z } from "zod";
 import { authRouter } from "./auth.router";
@@ -165,47 +165,6 @@ export const appRouter = router({
       
       return { completedModules: completedModulesCount, totalModules, progressPercentage, completedLessons: completedLessons.length };
     }),
-  }),
-
-  // Badges router para gerenciar conquistas
-  badges: router({
-    getAll: protectedProcedure.query(async ({ ctx }) => {
-      const db = await getDb();
-      if (!db) return [];
-      const userId = ctx.user.id;
-      return await db.select().from(userBadges).where(eq(userBadges.userId, userId));
-    }),
-
-    award: protectedProcedure
-      .input(z.object({ badgeId: z.string() }))
-      .mutation(async ({ ctx, input }) => {
-        const db = await getDb();
-        if (!db) return { success: false, awarded: false };
-        const userId = ctx.user.id;
-        
-        const existing = await db.select().from(userBadges).where(
-          and(eq(userBadges.userId, userId), eq(userBadges.badgeId, input.badgeId))
-        );
-        
-        if (existing.length === 0) {
-          await db.insert(userBadges).values({ userId, badgeId: input.badgeId });
-          return { success: true, awarded: true };
-        }
-        return { success: true, awarded: false };
-      }),
-
-    has: protectedProcedure
-      .input(z.object({ badgeId: z.string() }))
-      .query(async ({ ctx, input }) => {
-        const db = await getDb();
-        if (!db) return { hasBadge: false };
-        const userId = ctx.user.id;
-        
-        const badge = await db.select().from(userBadges).where(
-          and(eq(userBadges.userId, userId), eq(userBadges.badgeId, input.badgeId))
-        );
-        return { hasBadge: badge.length > 0 };
-      }),
   }),
 
   // Exercises router para salvar respostas dos exercícios
