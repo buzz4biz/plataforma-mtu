@@ -43,7 +43,7 @@ export default function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast.error("Preencha todos os campos");
       return;
@@ -78,6 +78,7 @@ export default function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   className="pl-10"
                   disabled={loginMutation.isPending}
+                  autoComplete="email"
                 />
               </div>
             </div>
@@ -94,6 +95,7 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-10 pr-10"
                   disabled={loginMutation.isPending}
+                  autoComplete="current-password"
                 />
                 <button
                   type="button"
@@ -152,8 +154,8 @@ export default function Login() {
         </CardContent>
       </Card>
 
-      <ResetPasswordDialog 
-        open={showResetDialog} 
+      <ResetPasswordDialog
+        open={showResetDialog}
         onOpenChange={setShowResetDialog}
       />
     </div>

@@ -21,10 +21,12 @@ import {
   Loader2
 } from "lucide-react";
 import { Link, useParams, useLocation } from "wouter";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Streamdown } from "streamdown";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 // Module content data
 const moduleContent: Record<string, {
@@ -3410,6 +3412,8 @@ export default function Module() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+  const [isDownloading, setIsDownloading] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // API hooks
   const utils = trpc.useUtils();
@@ -3544,6 +3548,68 @@ export default function Module() {
     }));
   };
 
+  const handleDownloadPDF = async () => {
+    if (!contentRef.current) return;
+
+    setIsDownloading(true);
+    const toastId = toast.loading("Gerando PDF...");
+
+    try {
+      // Small delay to ensure any pending renders are complete
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      const canvas = await html2canvas(contentRef.current, {
+        scale: 2, // Higher quality
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+        windowWidth: 1200, // Fixed width for consistency
+        onclone: (clonedDoc) => {
+          // Adjust styles in the clone if needed
+          const clonedElement = clonedDoc.querySelector('.prose') as HTMLElement;
+          if (clonedElement) {
+            clonedElement.style.padding = "40px";
+            clonedElement.style.maxWidth = "none";
+          }
+        }
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      // Sanitized filename
+      const safeTitle = currentLesson.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      pdf.save(`mtu-${moduleId}-${safeTitle}.pdf`);
+
+      toast.success("PDF gerado com sucesso!", { id: toastId });
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Erro ao gerar PDF", { id: toastId });
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="max-w-4xl mx-auto">
@@ -3611,14 +3677,20 @@ export default function Module() {
           <div className="lg:col-span-3 space-y-6">
             <Card>
               <CardHeader>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <BookOpen className="h-4 w-4" />
-                  Lição {currentLessonIndex + 1} de {module.lessons.length}
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <BookOpen className="h-4 w-4" />
+                    Lição {currentLessonIndex + 1} de {module.lessons.length}
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={handleDownloadPDF} disabled={isDownloading}>
+                    {isDownloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+                    <span className="ml-2 hidden sm:inline">Baixar PDF</span>
+                  </Button>
                 </div>
                 <CardTitle className="font-display text-xl">{currentLesson.title}</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="prose prose-neutral max-w-none">
+                <div className="prose prose-neutral max-w-none" ref={contentRef}>
                   <RichContentRenderer content={currentLesson.content} moduleId={`modulo-${moduleId}`} />
                 </div>
               </CardContent>
