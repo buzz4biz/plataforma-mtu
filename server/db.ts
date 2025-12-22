@@ -69,12 +69,19 @@ export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       let dbUrl = process.env.DATABASE_URL;
-      // Convert file:./path to absolute file:///path
-      if (dbUrl.startsWith('file:')) {
+      
+      // Only convert relative file paths on Windows/local development
+      // Render and production should use the DATABASE_URL as-is
+      if (dbUrl.startsWith('file:') && !dbUrl.startsWith('file://')) {
         const dbPath = dbUrl.replace('file:', '');
-        const absolutePath = path.resolve(dbPath);
-        dbUrl = `file:///${absolutePath.replace(/\\/g, '/')}`;
+        // Check if it's a relative path (not starting with / or drive letter)
+        if (!path.isAbsolute(dbPath)) {
+          const absolutePath = path.resolve(dbPath);
+          dbUrl = `file:///${absolutePath.replace(/\\/g, '/')}`;
+        }
       }
+      
+      console.log("[Database] Connecting to:", dbUrl);
       const client = createClient({ url: dbUrl });
       _db = drizzle(client);
       
