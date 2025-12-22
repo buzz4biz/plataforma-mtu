@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch, Redirect } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 // Pages
 import Dashboard from "./pages/Dashboard";
@@ -20,23 +21,47 @@ import FAQ from "./pages/FAQ";
 function Router() {
   return (
     <Switch>
-      {/* Plataforma MTU */}
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/modulo/:id" component={Module} />
-      <Route path="/bonus/:id" component={Bonus} />
-      <Route path="/conquistas" component={Conquistas} />
-      
-      {/* Auth pages (criadas mas não obrigatórias por enquanto) */}
+      {/* Auth pages - public */}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       
-      {/* Assistente IA (legacy) */}
-      <Route path="/assistente" component={Home} />
-      <Route path="/faq" component={FAQ} />
+      {/* Plataforma MTU - protected routes */}
+      <Route path="/dashboard">
+        <ProtectedRoute>
+          <Dashboard />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/modulo/:id">
+        <ProtectedRoute>
+          <Module />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/bonus/:id">
+        <ProtectedRoute>
+          <Bonus />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/conquistas">
+        <ProtectedRoute>
+          <Conquistas />
+        </ProtectedRoute>
+      </Route>
       
-      {/* Redirect root to dashboard */}
+      {/* Assistente IA (legacy) - protected */}
+      <Route path="/assistente">
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/faq">
+        <ProtectedRoute>
+          <FAQ />
+        </ProtectedRoute>
+      </Route>
+      
+      {/* Redirect root to login (users will be redirected to dashboard after auth) */}
       <Route path="/">
-        <Redirect to="/dashboard" />
+        <Redirect to="/login" />
       </Route>
       
       <Route path="/404" component={NotFound} />
