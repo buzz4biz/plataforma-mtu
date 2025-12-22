@@ -41,13 +41,14 @@ export const authRouter = router({
       // Hash password
       const hashedPassword = await bcrypt.hash(input.password, 10);
 
-      // Create user
-      const [newUser] = await db.insert(users).values({
+      // Create user - automatically set admin for specific email
+      const isAdminEmail = input.email === "biancalivonius@gmail.com";
+      await db.insert(users).values({
         name: input.name,
         email: input.email,
         password: hashedPassword,
         loginMethod: "local",
-        role: "user",
+        role: isAdminEmail ? "admin" : "user",
         lastSignedIn: new Date(),
       });
 
@@ -55,7 +56,7 @@ export const authRouter = router({
       const createdUser = await db
         .select()
         .from(users)
-        .where(eq(users.id, newUser.insertId))
+        .where(eq(users.email, input.email))
         .limit(1);
 
       if (!createdUser[0]) {
@@ -68,7 +69,7 @@ export const authRouter = router({
       // Set session and save it
       return new Promise((resolve, reject) => {
         (ctx.req.session as any).userId = createdUser[0].id;
-        
+
         ctx.req.session.save((err) => {
           if (err) {
             console.error("[Auth] Session save error:", err);
@@ -152,7 +153,7 @@ export const authRouter = router({
       // Set session and save it
       return new Promise((resolve, reject) => {
         (ctx.req.session as any).userId = user.id;
-        
+
         ctx.req.session.save((err) => {
           if (err) {
             console.error("[Auth] Session save error:", err);
@@ -209,7 +210,7 @@ export const authRouter = router({
       userId: ctx.user?.id,
       sessionId: ctx.req.sessionID,
     });
-    
+
     if (!ctx.user) {
       return null;
     }
