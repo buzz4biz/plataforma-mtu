@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,9 +17,21 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const utils = trpc.useUtils();
+
+  // Check if user is already authenticated
+  const { data: currentUser, isLoading } = trpc.auth.getCurrentUser.useQuery();
+
+  useEffect(() => {
+    if (currentUser && !isLoading) {
+      navigate("/dashboard");
+    }
+  }, [currentUser, isLoading, navigate]);
 
   const signupMutation = trpc.auth.signup.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
+      // Invalidate and refetch user data before navigating
+      await utils.auth.getCurrentUser.invalidate();
       toast.success("Conta criada com sucesso! Redirecionando...");
       setTimeout(() => navigate("/dashboard"), 1000);
     },
