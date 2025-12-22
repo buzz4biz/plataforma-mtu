@@ -8,24 +8,11 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { db } from "../db";
-import { sql } from "drizzle-orm";
 
 // Session configuration
 declare module "express-session" {
   interface SessionData {
     userId: number;
-  }
-}
-
-// Initialize database tables on startup
-async function initializeDatabase() {
-  try {
-    console.log("Checking database...");
-    await db.execute(sql`SELECT 1`);
-    console.log("Database ready!");
-  } catch (error) {
-    console.error("Database initialization error:", error);
   }
 }
 
@@ -49,9 +36,6 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
-  // Initialize database first
-  await initializeDatabase();
-  
   const app = express();
   const server = createServer(app);
   
