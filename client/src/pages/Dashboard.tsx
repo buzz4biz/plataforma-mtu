@@ -223,7 +223,7 @@ export default function Dashboard() {
                 className="bg-primary hover:bg-primary/90 gap-2 whitespace-nowrap"
               >
                 <a href="https://plataforma-mtu.onrender.com/assistente" target="_blank" rel="noopener noreferrer">
-                  <Sparkles className="h-4 w-4" />
+                  <Bot className="h-4 w-4" />
                   Acessar Assistente IA
                 </a>
               </Button>
