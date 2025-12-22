@@ -155,7 +155,11 @@ export const authRouter = router({
             })
           );
         } else {
-          ctx.res.clearCookie("connect.sid");
+          ctx.res.clearCookie("connect.sid", {
+            path: "/",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+          });
           resolve({ success: true });
         }
       });

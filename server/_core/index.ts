@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import session from "express-session";
+import cors from "cors";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
@@ -39,6 +40,14 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
   
+  // CORS configuration
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL || "http://localhost:3000",
+      credentials: true,
+    })
+  );
+  
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -53,7 +62,7 @@ async function startServer() {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-        sameSite: process.env.NODE_ENV === "production" ? "lax" : "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       },
     })
   );
