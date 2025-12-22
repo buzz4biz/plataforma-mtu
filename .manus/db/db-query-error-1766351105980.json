@@ -1,0 +1,8 @@
+{
+  "query": "CREATE TABLE `userBadges` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int NOT NULL,\n\t`badgeId` varchar(64) NOT NULL,\n\t`earnedAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `userBadges_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2mCk5QQRQknvGG1.f527493a0de7 --database gYPUTQhfshhHD2CfegYtHE --execute CREATE TABLE `userBadges` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int NOT NULL,\n\t`badgeId` varchar(64) NOT NULL,\n\t`earnedAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `userBadges_id` PRIMARY KEY(`id`)\n);",
+  "returncode": 1,
+  "logs": [
+    "ERROR 1050 (42S01) at line 1: Table 'gYPUTQhfshhHD2CfegYtHE.userBadges' already exists"
+  ]
+}

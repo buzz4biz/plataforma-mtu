@@ -1,0 +1,15 @@
+node_modules
+.git
+.env
+*.log
+dist
+.DS_Store
+*.db
+*.db-shm
+*.db-wal
+test-results.md
+todo.md
+ideas.md
+identidade-visual.md
+plataforma-design.md
+*.docx.txt

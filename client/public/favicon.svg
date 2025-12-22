@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37"/>
+      <stop offset="50%" style="stop-color:#f4d03f"/>
+      <stop offset="100%" style="stop-color:#c9a028"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="48" fill="#1a1a2e"/>
+  <text x="50" y="62" font-family="serif" font-size="32" font-weight="bold" fill="url(#goldGradient)" text-anchor="middle">MTU</text>
+  <line x1="20" y1="72" x2="80" y2="72" stroke="url(#goldGradient)" stroke-width="2"/>
+  <path d="M50 15 L52 22 L59 22 L54 27 L56 34 L50 30 L44 34 L46 27 L41 22 L48 22 Z" fill="url(#goldGradient)"/>
+</svg>

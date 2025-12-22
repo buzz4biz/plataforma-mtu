@@ -1,0 +1,16 @@
+{
+  "query": "SELECT * FROM userBadges;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2mCk5QQRQknvGG1.f527493a0de7 --database gYPUTQhfshhHD2CfegYtHE --execute SELECT * FROM userBadges;",
+  "rows": [
+    {
+      "id": "1",
+      "userId": "1",
+      "badgeId": "diagnostico-completo",
+      "earnedAt": "2025-12-21 21:09:17"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuserId\tbadgeId\tearnedAt\n1\t1\tdiagnostico-completo\t2025-12-21 21:09:17\n",
+  "stderr": "",
+  "execution_time_ms": 60
+}

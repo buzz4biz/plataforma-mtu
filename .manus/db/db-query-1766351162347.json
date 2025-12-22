@@ -1,0 +1,31 @@
+{
+  "query": "SELECT id, userId, moduleId, lessonId, completed FROM userProgress;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2mCk5QQRQknvGG1.f527493a0de7 --database gYPUTQhfshhHD2CfegYtHE --execute SELECT id, userId, moduleId, lessonId, completed FROM userProgress;",
+  "rows": [
+    {
+      "id": "1",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "intro",
+      "completed": "1"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "causa",
+      "completed": "1"
+    },
+    {
+      "id": "3",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "solucao",
+      "completed": "1"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuserId\tmoduleId\tlessonId\tcompleted\n1\t1\tmodulo-1\tintro\t1\n2\t1\tmodulo-1\tcausa\t1\n3\t1\tmodulo-1\tsolucao\t1\n",
+  "stderr": "",
+  "execution_time_ms": 56
+}

@@ -1,0 +1,60 @@
+{
+  "query": "SELECT * FROM userProgress;",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2mCk5QQRQknvGG1.f527493a0de7 --database gYPUTQhfshhHD2CfegYtHE --execute SELECT * FROM userProgress;",
+  "rows": [
+    {
+      "id": "1",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "intro",
+      "completed": "1",
+      "completedAt": "2025-12-21 21:00:21",
+      "createdAt": "2025-12-21 21:00:20",
+      "updatedAt": "2025-12-21 21:00:20"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "causa",
+      "completed": "1",
+      "completedAt": "2025-12-21 21:00:36",
+      "createdAt": "2025-12-21 21:00:35",
+      "updatedAt": "2025-12-21 21:00:35"
+    },
+    {
+      "id": "3",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "solucao",
+      "completed": "1",
+      "completedAt": "2025-12-21 21:00:50",
+      "createdAt": "2025-12-21 21:00:49",
+      "updatedAt": "2025-12-21 21:00:49"
+    },
+    {
+      "id": "4",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "proximo",
+      "completed": "1",
+      "completedAt": "2025-12-21 21:09:18",
+      "createdAt": "2025-12-21 21:09:17",
+      "updatedAt": "2025-12-21 21:09:17"
+    },
+    {
+      "id": "5",
+      "userId": "1",
+      "moduleId": "modulo-1",
+      "lessonId": "_module_complete",
+      "completed": "1",
+      "completedAt": "2025-12-21 21:09:18",
+      "createdAt": "2025-12-21 21:09:17",
+      "updatedAt": "2025-12-21 21:09:17"
+    }
+  ],
+  "messages": [],
+  "stdout": "id\tuserId\tmoduleId\tlessonId\tcompleted\tcompletedAt\tcreatedAt\tupdatedAt\n1\t1\tmodulo-1\tintro\t1\t2025-12-21 21:00:21\t2025-12-21 21:00:20\t2025-12-21 21:00:20\n2\t1\tmodulo-1\tcausa\t1\t2025-12-21 21:00:36\t2025-12-21 21:00:35\t2025-12-21 21:00:35\n3\t1\tmodulo-1\tsolucao\t1\t2025-12-21 21:00:50\t2025-12-21 21:00:49\t2025-12-21 21:00:49\n4\t1\tmodulo-1\tproximo\t1\t2025-12-21 21:09:18\t2025-12-21 21:09:17\t2025-12-21 21:09:17\n5\t1\tmodulo-1\t_module_complete\t1\t2025-12-21 21:09:18\t2025-12-21 21:09:17\t2025-12-21 21:09:17\n",
+  "stderr": "",
+  "execution_time_ms": 53
+}

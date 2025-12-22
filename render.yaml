@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: plataforma-mtu
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        value: file:/opt/render/project/data/production.db
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: GROQ_API_KEY
+        sync: false
+    disk:
+      name: data
+      mountPath: /opt/render/project/data
+      sizeGB: 1

@@ -1,0 +1,9 @@
+{
+  "query": "SELECT * FROM userProgress WHERE lessonId = '_module_complete';",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2mCk5QQRQknvGG1.f527493a0de7 --database gYPUTQhfshhHD2CfegYtHE --execute SELECT * FROM userProgress WHERE lessonId = '_module_complete';",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 55
+}
