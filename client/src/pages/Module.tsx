@@ -3491,15 +3491,22 @@ export default function Module() {
           await awardBadgeMutation.mutateAsync({ badgeId });
         }
         
+        // Force refetch progress before navigating
+        await refetchProgress();
+        
         toast.success("Módulo concluído com sucesso!");
+        
+        // Small delay to ensure data is updated
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 500);
       } catch (error) {
         console.error("Error completing module:", error);
         toast.error("Erro ao salvar progresso do módulo");
       }
+    } else {
+      window.location.href = "/dashboard";
     }
-    
-    // Navigate to dashboard
-    window.location.href = "/dashboard";
   };
 
   const currentLesson = module.lessons[currentLessonIndex];
