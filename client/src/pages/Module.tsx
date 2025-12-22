@@ -6,10 +6,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import AutoSaveTextarea from "@/components/AutoSaveTextarea";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  CheckCircle2, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  CheckCircle2,
   Circle,
   BookOpen,
   Clock,
@@ -3405,14 +3405,14 @@ export default function Module() {
   const [, setLocation] = useLocation();
   const moduleId = params.id || "1";
   const module = moduleContent[moduleId];
-  
+
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-  
+
   // API hooks
   const utils = trpc.useUtils();
-  const { data: user } = trpc.auth.me.useQuery();
+  const { data: user } = trpc.auth.getCurrentUser.useQuery();
   const { data: progressData, refetch: refetchProgress } = trpc.progress.getByModule.useQuery(
     { moduleId: `modulo-${moduleId}` },
     { enabled: !!user }
@@ -3420,7 +3420,7 @@ export default function Module() {
   const completeLessonMutation = trpc.progress.completeLesson.useMutation();
   const completeModuleMutation = trpc.progress.completeModule.useMutation();
   const saveExerciseMutation = trpc.exercises.save.useMutation();
-  
+
   // Load progress from database
   useEffect(() => {
     if (progressData) {
@@ -3432,6 +3432,11 @@ export default function Module() {
     }
   }, [progressData]);
 
+  // Scroll to top when lesson changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentLessonIndex]);
+
   if (!module) {
     return (
       <div className="container max-w-4xl mx-auto py-12 px-4">
@@ -3439,7 +3444,7 @@ export default function Module() {
           <CardHeader>
             <CardTitle>Módulo não encontrado</CardTitle>
             <CardDescription>
-              O módulo "{moduleId}" não existe. 
+              O módulo "{moduleId}" não existe.
               <br />
               Módulos disponíveis: {Object.keys(moduleContent).join(', ')}
             </CardDescription>
@@ -3456,7 +3461,7 @@ export default function Module() {
       </div>
     );
   }
-  
+
   const handleCompleteModule = async () => {
     // Mark last lesson as complete if not already
     if (!completedLessons.includes(currentLesson.id)) {
@@ -3472,21 +3477,21 @@ export default function Module() {
         }
       }
     }
-    
+
     // Mark module as complete
     if (user) {
       try {
         await completeModuleMutation.mutateAsync({
           moduleId: `modulo-${moduleId}`,
         });
-        
+
         // Force refetch progress and invalidate all progress queries
         await refetchProgress();
         await utils.progress.getAll.invalidate();
         await utils.progress.getStats.invalidate();
-        
+
         toast.success("Módulo concluído com sucesso!");
-        
+
         // Navigate using wouter to preserve cache
         setTimeout(() => {
           setLocation("/dashboard");
@@ -3506,7 +3511,7 @@ export default function Module() {
   const handleNextLesson = async () => {
     if (!completedLessons.includes(currentLesson.id)) {
       setCompletedLessons([...completedLessons, currentLesson.id]);
-      
+
       // Save to database if logged in
       if (user) {
         try {
@@ -3549,7 +3554,7 @@ export default function Module() {
               Voltar ao Dashboard
             </Button>
           </Link>
-          
+
           <div className="flex items-start justify-between">
             <div>
               <span className="text-sm font-medium text-primary">{module.subtitle}</span>
@@ -3586,9 +3591,8 @@ export default function Module() {
                   <button
                     key={lesson.id}
                     onClick={() => setCurrentLessonIndex(index)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${
-                      index === currentLessonIndex ? 'bg-primary/10 text-primary' : ''
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${index === currentLessonIndex ? 'bg-primary/10 text-primary' : ''
+                      }`}
                   >
                     {completedLessons.includes(lesson.id) ? (
                       <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
@@ -3634,12 +3638,12 @@ export default function Module() {
                     <div className="space-y-3">
                       {currentLesson.exercise.items.map((item, index) => (
                         <div key={index} className="flex items-center gap-3">
-                          <Checkbox 
+                          <Checkbox
                             id={`item-${index}`}
                             checked={checkedItems[item] || false}
                             onCheckedChange={() => toggleCheckItem(item)}
                           />
-                          <label 
+                          <label
                             htmlFor={`item-${index}`}
                             className="text-sm cursor-pointer"
                           >
@@ -3677,9 +3681,9 @@ export default function Module() {
                 <ChevronLeft className="h-4 w-4 mr-1" />
                 Anterior
               </Button>
-              
+
               {currentLessonIndex === module.lessons.length - 1 ? (
-                <Button 
+                <Button
                   onClick={handleCompleteModule}
                   className="bg-primary hover:bg-primary/90"
                   disabled={completeModuleMutation.isPending}

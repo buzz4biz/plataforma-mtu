@@ -2,12 +2,12 @@ import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Target, 
-  BookOpen, 
-  MessageSquare, 
-  Calendar, 
-  Gift, 
+import {
+  Target,
+  BookOpen,
+  MessageSquare,
+  Calendar,
+  Gift,
   Bot,
   ArrowRight,
   CheckCircle2,
@@ -84,7 +84,7 @@ const bonuses = [
 ];
 
 export default function Dashboard() {
-  const { data: user } = trpc.auth.me.useQuery();
+  const { data: user } = trpc.auth.getCurrentUser.useQuery();
   const { data: progressData, isLoading: progressLoading } = trpc.progress.getAll.useQuery(undefined, {
     enabled: !!user,
   });
@@ -106,17 +106,17 @@ export default function Dashboard() {
   // Encontrar módulo em andamento (com progresso mas não completo)
   const getModuleInProgress = () => {
     if (!progressData) return null;
-    
+
     // Procurar módulos com lições completadas mas não completamente finalizados
     for (const mod of moduleDefinitions) {
-      const moduleProgress = progressData.filter(p => 
-        p.moduleId === mod.id && 
+      const moduleProgress = progressData.filter(p =>
+        p.moduleId === mod.id &&
         p.lessonId !== "_module_complete" &&
         p.completed === 1
       );
-      
+
       const isModuleComplete = completedModuleIds.includes(mod.id);
-      
+
       // Se tem progresso e não está completo, é o módulo em andamento
       if (moduleProgress.length > 0 && !isModuleComplete) {
         return mod;
@@ -132,14 +132,14 @@ export default function Dashboard() {
     if (inProgress) {
       return inProgress;
     }
-    
+
     // Se não há módulo em andamento, pegar o primeiro não completo
     for (const mod of moduleDefinitions) {
       if (!completedModuleIds.includes(mod.id)) {
         return mod;
       }
     }
-    
+
     // Se todos completos, voltar ao primeiro
     return moduleDefinitions[0];
   };
@@ -218,8 +218,8 @@ export default function Dashboard() {
                   Use nosso assistente de IA para extrair seu Mecanismo Terapêutico Único de forma guiada e personalizada.
                 </p>
               </div>
-              <Button 
-                asChild 
+              <Button
+                asChild
                 className="bg-primary hover:bg-primary/90 gap-2 whitespace-nowrap"
               >
                 <a href="https://plataforma-mtu.onrender.com/assistente" target="_blank" rel="noopener noreferrer">
@@ -241,7 +241,7 @@ export default function Dashboard() {
             {moduleDefinitions.map((module) => {
               const isCompleted = completedModuleIds.includes(module.id);
               const isCurrent = module.id === nextModule.id && !isCompleted;
-              
+
               return (
                 <Link key={module.id} href={module.path}>
                   <Card className={`h-full transition-all hover:shadow-lg cursor-pointer ${isCurrent ? 'ring-2 ring-primary' : ''} ${isCompleted ? 'bg-primary/5' : ''}`}>
