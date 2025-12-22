@@ -187,10 +187,11 @@ Pegue seu perfil do Instagram, seu site, ou qualquer material de divulgação qu
 #### 3. Você lista principalmente credenciais ou explica seu processo?
 
 Marque uma opção:
-* {{checkbox:m1_diag_q3_cred:Credenciais}}
-* {{checkbox:m1_diag_q3_proc:Processo}}
-* {{checkbox:m1_diag_q3_ambos:Ambos}}
-* {{checkbox:m1_diag_q3_nenhum:Nenhum}}
+
+{{checkbox:m1_diag_q3_cred:Credenciais}}
+{{checkbox:m1_diag_q3_proc:Processo}}
+{{checkbox:m1_diag_q3_ambos:Ambos}}
+{{checkbox:m1_diag_q3_nenhum:Nenhum}}
 
 ---
 
@@ -367,18 +368,20 @@ Com base em tudo que você mapeou até aqui, complete seu diagnóstico:
 ### Diagnóstico: Onde Você Está Agora
 
 **1. Seu mercado está no nível de sofisticação:**
-* ☐ Nível 1
-* ☐ Nível 2
-* ☐ Nível 3 ⭐ (Provavelmente este)
-* ☐ Nível 4
-* ☐ Nível 5
+
+{{checkbox:m1_diag_nv1:Nível 1}}
+{{checkbox:m1_diag_nv2:Nível 2}}
+{{checkbox:m1_diag_nv3:Nível 3 ⭐ (Provavelmente este)}}
+{{checkbox:m1_diag_nv4:Nível 4}}
+{{checkbox:m1_diag_nv5:Nível 5}}
 
 **2. Sua comunicação atual está no nível:**
-* ☐ Nível 1
-* ☐ Nível 2
-* ☐ Nível 3
-* ☐ Nível 4
-* ☐ Nível 5
+
+{{checkbox:m1_diag_com1:Nível 1}}
+{{checkbox:m1_diag_com2:Nível 2}}
+{{checkbox:m1_diag_com3:Nível 3}}
+{{checkbox:m1_diag_com4:Nível 4}}
+{{checkbox:m1_diag_com5:Nível 5}}
 
 **3. O GAP (diferença entre onde o mercado está e onde você está):**
 
@@ -3552,16 +3555,17 @@ export default function Module() {
     if (!contentRef.current) return;
 
     setIsDownloading(true);
-    const toastId = toast.loading("Gerando PDF...");
+    const toastId = toast.loading("Gerando PDF... Aguarde um momento.");
 
     try {
       // Small delay to ensure any pending renders are complete
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 800));
 
       const canvas = await html2canvas(contentRef.current, {
         scale: 2, // Higher quality
         useCORS: true,
-        logging: false,
+        allowTaint: true, // Allow cross-origin images if useCORS fails
+        logging: true, // Enable logging to see errors in console
         backgroundColor: "#ffffff",
         windowWidth: 1200, // Fixed width for consistency
         onclone: (clonedDoc) => {
@@ -3570,11 +3574,19 @@ export default function Module() {
           if (clonedElement) {
             clonedElement.style.padding = "40px";
             clonedElement.style.maxWidth = "none";
+            clonedElement.style.margin = "0";
+            // Force text colors to be black for better PDF readability
+            clonedElement.style.color = "#000000";
           }
         }
       });
 
-      const imgData = canvas.toDataURL("image/png");
+      // Check if canvas works
+      if (canvas.width === 0 || canvas.height === 0) {
+        throw new Error("Canvas generation failed - empty dimensions");
+      }
+
+      const imgData = canvas.toDataURL("image/jpeg", 0.95); // Use JPEG for smaller size and better compatibility
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
@@ -3587,13 +3599,13 @@ export default function Module() {
       let heightLeft = imgHeight;
       let position = 0;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
 
       while (heightLeft >= 0) {
         position = heightLeft - imgHeight;
         pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
 
@@ -3604,7 +3616,7 @@ export default function Module() {
       toast.success("PDF gerado com sucesso!", { id: toastId });
     } catch (error) {
       console.error("Error generating PDF:", error);
-      toast.error("Erro ao gerar PDF", { id: toastId });
+      toast.error("Erro ao gerar PDF. Tente novamente.", { id: toastId });
     } finally {
       setIsDownloading(false);
     }
