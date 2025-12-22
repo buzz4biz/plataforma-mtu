@@ -164,12 +164,22 @@ export default function Dashboard() {
               Sua jornada para descobrir e comunicar seu Mecanismo Terapêutico Único começa aqui.
             </p>
           </div>
-          <Button asChild className="bg-primary hover:bg-primary/90 gap-2">
-            <Link href={nextModule.path}>
-              <Play className="h-4 w-4" />
-              Continuar de onde parou
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {user?.role === "admin" && (
+              <Button asChild variant="outline" className="gap-2">
+                <Link href="/admin">
+                  <Target className="h-4 w-4" />
+                  Dashboard Admin
+                </Link>
+              </Button>
+            )}
+            <Button asChild className="bg-primary hover:bg-primary/90 gap-2">
+              <Link href={nextModule.path}>
+                <Play className="h-4 w-4" />
+                Continuar de onde parou
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {/* Progress Overview */}

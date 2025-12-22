@@ -12,6 +12,7 @@ import Module from "./pages/Module";
 import Bonus from "./pages/Bonus";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AdminDashboard from "./pages/AdminDashboard";
 
 // Legacy pages (Assistente IA - mantido para compatibilidade)
 import Home from "./pages/Home";
@@ -23,11 +24,16 @@ function Router() {
       {/* Auth pages - public */}
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      
+
       {/* Plataforma MTU - protected routes */}
       <Route path="/dashboard">
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      </Route>
+      <Route path="/admin">
+        <ProtectedRoute>
+          <AdminDashboard />
         </ProtectedRoute>
       </Route>
       <Route path="/modulo/:id">
@@ -40,7 +46,7 @@ function Router() {
           <Bonus />
         </ProtectedRoute>
       </Route>
-      
+
       {/* Assistente IA (legacy) - protected */}
       <Route path="/assistente">
         <ProtectedRoute>
@@ -52,12 +58,12 @@ function Router() {
           <FAQ />
         </ProtectedRoute>
       </Route>
-      
+
       {/* Redirect root to login (users will be redirected to dashboard after auth) */}
       <Route path="/">
         <Redirect to="/login" />
       </Route>
-      
+
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

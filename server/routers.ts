@@ -3,10 +3,10 @@ import { MTU_SYSTEM_PROMPT, FULL_KNOWLEDGE_BASE } from "@shared/mtuKnowledge";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { invokeGroq } from "./_core/groq";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { getDb } from "./db";
-import { userProgress, userExercises } from "../drizzle/schema";
-import { eq, and } from "drizzle-orm";
+import { userProgress, userExercises, users } from "../drizzle/schema";
+import { eq, and, sql } from "drizzle-orm";
 import { z } from "zod";
 import { authRouter } from "./auth.router";
 
@@ -43,7 +43,7 @@ export const appRouter = router({
 
         try {
           const response = await invokeGroq({ messages: llmMessages });
-          const assistantMessage = response.choices[0]?.message?.content || 
+          const assistantMessage = response.choices[0]?.message?.content ||
             "Desculpe, não consegui processar sua mensagem. Por favor, tente novamente.";
           return { success: true, message: assistantMessage };
         } catch (error) {
@@ -79,7 +79,7 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) return { success: false, error: "Database not available" };
         const userId = ctx.user.id;
-        
+
         const existing = await db.select().from(userProgress).where(
           and(
             eq(userProgress.userId, userId),
@@ -87,7 +87,7 @@ export const appRouter = router({
             eq(userProgress.lessonId, input.lessonId)
           )
         );
-        
+
         if (existing.length > 0) {
           await db.update(userProgress)
             .set({ completed: 1, completedAt: new Date() })
@@ -110,9 +110,9 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) return { success: false, error: "Database not available" };
         const userId = ctx.user.id;
-        
+
         console.log("[Progress] Completing module:", { userId, moduleId: input.moduleId });
-        
+
         const existing = await db.select().from(userProgress).where(
           and(
             eq(userProgress.userId, userId),
@@ -120,7 +120,7 @@ export const appRouter = router({
             eq(userProgress.lessonId, "_module_complete")
           )
         );
-        
+
         if (existing.length === 0) {
           await db.insert(userProgress).values({
             userId,
@@ -140,9 +140,9 @@ export const appRouter = router({
       const db = await getDb();
       if (!db) return { completedModules: 0, totalModules: 7, progressPercentage: 0, completedLessons: 0 };
       const userId = ctx.user.id;
-      
+
       console.log("[Stats] Getting stats for user:", userId);
-      
+
       const completedModules = await db.select().from(userProgress).where(
         and(
           eq(userProgress.userId, userId),
@@ -150,19 +150,19 @@ export const appRouter = router({
           eq(userProgress.completed, 1)
         )
       );
-      
+
       console.log("[Stats] Completed modules:", completedModules);
-      
+
       const completedLessons = await db.select().from(userProgress).where(
         and(eq(userProgress.userId, userId), eq(userProgress.completed, 1))
       );
-      
+
       const totalModules = 7;
       const completedModulesCount = completedModules.length;
       const progressPercentage = Math.round((completedModulesCount / totalModules) * 100);
-      
+
       console.log("[Stats] Result:", { completedModulesCount, totalModules, progressPercentage, completedLessons: completedLessons.length });
-      
+
       return { completedModules: completedModulesCount, totalModules, progressPercentage, completedLessons: completedLessons.length };
     }),
   }),
@@ -182,7 +182,7 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) return null;
         const userId = ctx.user.id;
-        
+
         const exercise = await db.select().from(userExercises).where(
           and(
             eq(userExercises.userId, userId),
@@ -199,7 +199,7 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) return { success: false };
         const userId = ctx.user.id;
-        
+
         const existing = await db.select().from(userExercises).where(
           and(
             eq(userExercises.userId, userId),
@@ -207,7 +207,7 @@ export const appRouter = router({
             eq(userExercises.exerciseId, input.exerciseId)
           )
         );
-        
+
         if (existing.length > 0) {
           await db.update(userExercises)
             .set({ response: input.response })
@@ -221,6 +221,138 @@ export const appRouter = router({
           });
         }
         return { success: true };
+      }),
+  }),
+
+  // Admin router para dashboard administrativo
+  admin: router({
+    // Listar todos os usuários
+    getAllUsers: adminProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) return [];
+
+      const allUsers = await db.select({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        role: users.role,
+        loginMethod: users.loginMethod,
+        createdAt: users.createdAt,
+        lastSignedIn: users.lastSignedIn,
+      }).from(users);
+
+      return allUsers;
+    }),
+
+    // Obter detalhes de um usuário específico
+    getUserDetails: adminProcedure
+      .input(z.object({ userId: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) return null;
+
+        const user = await db.select().from(users).where(eq(users.id, input.userId));
+        if (user.length === 0) return null;
+
+        const progress = await db.select().from(userProgress).where(eq(userProgress.userId, input.userId));
+        const exercises = await db.select().from(userExercises).where(eq(userExercises.userId, input.userId));
+
+        return {
+          user: user[0],
+          progress,
+          exercises,
+        };
+      }),
+
+    // Obter todas as respostas de todos os usuários
+    getAllResponses: adminProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) return [];
+
+      const responses = await db
+        .select({
+          id: userExercises.id,
+          userId: userExercises.userId,
+          userName: users.name,
+          userEmail: users.email,
+          moduleId: userExercises.moduleId,
+          exerciseId: userExercises.exerciseId,
+          response: userExercises.response,
+          createdAt: userExercises.createdAt,
+          updatedAt: userExercises.updatedAt,
+        })
+        .from(userExercises)
+        .leftJoin(users, eq(userExercises.userId, users.id));
+
+      return responses;
+    }),
+
+    // Obter estatísticas gerais da plataforma
+    getPlatformStats: adminProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) return {
+        totalUsers: 0,
+        activeUsers: 0,
+        totalResponses: 0,
+        completedModules: 0,
+        averageProgress: 0,
+      };
+
+      // Total de usuários
+      const totalUsersResult = await db.select({ count: sql<number>`count(*)` }).from(users);
+      const totalUsers = totalUsersResult[0]?.count || 0;
+
+      // Usuários ativos (com pelo menos uma resposta)
+      const activeUsersResult = await db
+        .select({ count: sql<number>`count(distinct ${userExercises.userId})` })
+        .from(userExercises);
+      const activeUsers = activeUsersResult[0]?.count || 0;
+
+      // Total de respostas
+      const totalResponsesResult = await db.select({ count: sql<number>`count(*)` }).from(userExercises);
+      const totalResponses = totalResponsesResult[0]?.count || 0;
+
+      // Módulos completados
+      const completedModulesResult = await db
+        .select({ count: sql<number>`count(*)` })
+        .from(userProgress)
+        .where(and(eq(userProgress.lessonId, "_module_complete"), eq(userProgress.completed, 1)));
+      const completedModules = completedModulesResult[0]?.count || 0;
+
+      // Progresso médio (% de módulos completados por usuário)
+      const averageProgress = totalUsers > 0 ? Math.round((completedModules / (totalUsers * 7)) * 100) : 0;
+
+      return {
+        totalUsers,
+        activeUsers,
+        totalResponses,
+        completedModules,
+        averageProgress,
+      };
+    }),
+
+    // Obter respostas agrupadas por módulo e exercício
+    getResponsesByModule: adminProcedure
+      .input(z.object({ moduleId: z.string() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) return [];
+
+        const responses = await db
+          .select({
+            id: userExercises.id,
+            userId: userExercises.userId,
+            userName: users.name,
+            userEmail: users.email,
+            exerciseId: userExercises.exerciseId,
+            response: userExercises.response,
+            updatedAt: userExercises.updatedAt,
+          })
+          .from(userExercises)
+          .leftJoin(users, eq(userExercises.userId, users.id))
+          .where(eq(userExercises.moduleId, input.moduleId));
+
+        return responses;
       }),
   }),
 });
