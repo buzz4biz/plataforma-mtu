@@ -19,6 +19,12 @@ export async function createContext(
 
   // Try session-based auth first
   const sessionUserId = (opts.req.session as any)?.userId;
+  console.log("[Context] Creating context:", {
+    sessionId: opts.req.sessionID,
+    sessionUserId,
+    hasCookie: !!opts.req.headers.cookie,
+  });
+  
   if (sessionUserId) {
     const db = await getDb();
     if (db) {
@@ -29,6 +35,7 @@ export async function createContext(
         .limit(1);
       if (sessionUser) {
         user = sessionUser;
+        console.log("[Context] User found from session:", { userId: user.id, email: user.email });
       }
     }
   }

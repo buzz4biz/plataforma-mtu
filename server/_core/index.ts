@@ -40,10 +40,33 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
   
-  // CORS configuration
+  // Trust first proxy (required for Render and other cloud platforms)
+  app.set("trust proxy", 1);
+  
+  // CORS configuration - Allow same-origin and configured CLIENT_URL
+  const allowedOrigins = process.env.CLIENT_URL 
+    ? [process.env.CLIENT_URL]
+    : [];
+    
   app.use(
     cors({
-      origin: process.env.CLIENT_URL || "http://localhost:3000",
+      origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps, Postman, or same-origin)
+        if (!origin) return callback(null, true);
+        
+        // In production, if CLIENT_URL is set, check against it
+        if (allowedOrigins.length > 0 && allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        
+        // In development, allow localhost
+        if (process.env.NODE_ENV !== "production" && origin.includes("localhost")) {
+          return callback(null, true);
+        }
+        
+        // For same-origin requests in production (when API and frontend are served from same domain)
+        callback(null, true);
+      },
       credentials: true,
     })
   );
@@ -62,7 +85,8 @@ async function startServer() {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        // Use 'lax' in production since frontend and backend are on same domain
+        sameSite: "lax",
       },
     })
   );

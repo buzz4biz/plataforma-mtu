@@ -65,17 +65,35 @@ export const authRouter = router({
         });
       }
 
-      // Set session
-      (ctx.req.session as any).userId = createdUser[0].id;
+      // Set session and save it
+      return new Promise((resolve, reject) => {
+        (ctx.req.session as any).userId = createdUser[0].id;
+        
+        ctx.req.session.save((err) => {
+          if (err) {
+            console.error("[Auth] Session save error:", err);
+            reject(new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Erro ao salvar sessão",
+            }));
+          } else {
+            console.log("[Auth] Signup successful:", {
+              userId: createdUser[0].id,
+              email: createdUser[0].email,
+              sessionId: ctx.req.sessionID,
+            });
 
-      return {
-        success: true,
-        user: {
-          id: createdUser[0].id,
-          name: createdUser[0].name,
-          email: createdUser[0].email,
-        },
-      };
+            resolve({
+              success: true,
+              user: {
+                id: createdUser[0].id,
+                name: createdUser[0].name,
+                email: createdUser[0].email,
+              },
+            });
+          }
+        });
+      });
     }),
 
   login: publicProcedure
@@ -131,17 +149,36 @@ export const authRouter = router({
         .set({ lastSignedIn: new Date() })
         .where(eq(users.id, user.id));
 
-      // Set session
-      (ctx.req.session as any).userId = user.id;
+      // Set session and save it
+      return new Promise((resolve, reject) => {
+        (ctx.req.session as any).userId = user.id;
+        
+        ctx.req.session.save((err) => {
+          if (err) {
+            console.error("[Auth] Session save error:", err);
+            reject(new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Erro ao salvar sessão",
+            }));
+          } else {
+            // Log session creation
+            console.log("[Auth] Login successful:", {
+              userId: user.id,
+              email: user.email,
+              sessionId: ctx.req.sessionID,
+            });
 
-      return {
-        success: true,
-        user: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-        },
-      };
+            resolve({
+              success: true,
+              user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+              },
+            });
+          }
+        });
+      });
     }),
 
   logout: publicProcedure.mutation(async ({ ctx }) => {
@@ -158,7 +195,7 @@ export const authRouter = router({
           ctx.res.clearCookie("connect.sid", {
             path: "/",
             secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            sameSite: "lax",
           });
           resolve({ success: true });
         }
@@ -167,6 +204,12 @@ export const authRouter = router({
   }),
 
   getCurrentUser: publicProcedure.query(({ ctx }) => {
+    console.log("[Auth] getCurrentUser called:", {
+      hasUser: !!ctx.user,
+      userId: ctx.user?.id,
+      sessionId: ctx.req.sessionID,
+    });
+    
     if (!ctx.user) {
       return null;
     }
