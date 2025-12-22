@@ -70,25 +70,39 @@ export async function getDb() {
     try {
       let dbUrl = process.env.DATABASE_URL;
       
-      // Only convert relative file paths on Windows/local development
-      // Render and production should use the DATABASE_URL as-is
-      if (dbUrl.startsWith('file:') && !dbUrl.startsWith('file://')) {
-        const dbPath = dbUrl.replace('file:', '');
-        // Check if it's a relative path (not starting with / or drive letter)
-        if (!path.isAbsolute(dbPath)) {
+      console.log("[Database] Original DATABASE_URL:", dbUrl);
+      
+      // Handle different URL formats
+      if (dbUrl.startsWith('file:')) {
+        const dbPath = dbUrl.replace(/^file:/, '');
+        console.log("[Database] Extracted path:", dbPath);
+        
+        // For absolute paths (production/Render), keep as-is
+        if (path.isAbsolute(dbPath)) {
+          dbUrl = `file:${dbPath}`;
+          console.log("[Database] Using absolute path:", dbUrl);
+        } else {
+          // For relative paths (local development), resolve to absolute
           const absolutePath = path.resolve(dbPath);
-          dbUrl = `file:///${absolutePath.replace(/\\/g, '/')}`;
+          dbUrl = `file:${absolutePath}`;
+          console.log("[Database] Resolved relative path to:", dbUrl);
         }
       }
       
-      console.log("[Database] Connecting to:", dbUrl);
+      console.log("[Database] Final connection URL:", dbUrl);
       const client = createClient({ url: dbUrl });
       _db = drizzle(client);
       
       // Initialize tables on first connection
       await initializeTables(_db);
+      
+      console.log("[Database] ✓ Connection successful");
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
+      console.error("[Database] ❌ Failed to connect:", error);
+      if (error instanceof Error) {
+        console.error("[Database] Error details:", error.message);
+        console.error("[Database] Stack:", error.stack);
+      }
       _db = null;
     }
   }
