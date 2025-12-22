@@ -1,4 +1,5 @@
 import DashboardLayout from "@/components/DashboardLayout";
+import RichContentRenderer from "@/components/RichContentRenderer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -169,7 +170,7 @@ Pegue seu perfil do Instagram, seu site, ou qualquer material de divulgação qu
 
 *(Ex: "Psicóloga especializada em ansiedade", "Terapia de casal", etc.)*
 
-**Sua resposta:** _________________________________________________
+**Sua resposta:** {{input:m1_diag_q1}}
 
 ---
 
@@ -177,17 +178,17 @@ Pegue seu perfil do Instagram, seu site, ou qualquer material de divulgação qu
 
 *(A maioria não tem essa resposta - e é aí que está o problema)*
 
-**Sua resposta:** _________________________________________________
+**Sua resposta:** {{input:m1_diag_q2}}
 
 ---
 
 #### 3. Você lista principalmente credenciais ou explica seu processo?
 
 Marque uma opção:
-* ☐ Credenciais
-* ☐ Processo
-* ☐ Ambos
-* ☐ Nenhum
+* {{checkbox:m1_diag_q3_cred:Credenciais}}
+* {{checkbox:m1_diag_q3_proc:Processo}}
+* {{checkbox:m1_diag_q3_ambos:Ambos}}
+* {{checkbox:m1_diag_q3_nenhum:Nenhum}}
 
 ---
 
@@ -195,7 +196,7 @@ Marque uma opção:
 
 *(Honestamente: ele sabe o que vai acontecer nas sessões?)*
 
-**Sua resposta:** _________________________________________________
+**Sua resposta:** {{input:m1_diag_q4}}
 
 ---
 
@@ -203,7 +204,7 @@ Marque uma opção:
 
 *(Vá no Instagram agora e compare com 3 concorrentes)*
 
-**Sua resposta:** _________________________________________________
+**Sua resposta:** {{input:m1_diag_q5}}
 
 ---
 
@@ -233,7 +234,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Seu cliente não sabe avaliar se sua especialização é melhor que outra. Todos têm CRP. Todos têm experiência.
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err1_sim:Sim}}  {{checkbox:m1_err1_nao:Não}}
 
 ---
 
@@ -243,7 +244,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Seu cliente não sabe o que é "regulação emocional". Soa vago e intimidante.
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err2_sim:Sim}}  {{checkbox:m1_err2_nao:Não}}
 
 ---
 
@@ -253,7 +254,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Todos dizem isso. Seu cliente já ouviu mil vezes. Ele pensa: "Sim, mas COMO?"
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err3_sim:Sim}}  {{checkbox:m1_err3_nao:Não}}
 
 ---
 
@@ -263,7 +264,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Acolhimento é esperado. Não é diferencial. Seu cliente quer saber o que acontece DEPOIS do acolhimento.
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err4_sim:Sim}}  {{checkbox:m1_err4_nao:Não}}
 
 ---
 
@@ -273,7 +274,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Quando você compete por preço, se posiciona como commodity. Atrai clientes errados.
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err5_sim:Sim}}  {{checkbox:m1_err5_nao:Não}}
 
 ---
 
@@ -283,7 +284,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Sem personalidade = sem conexão = sem memorabilidade.
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err6_sim:Sim}}  {{checkbox:m1_err6_nao:Não}}
 
 ---
 
@@ -293,7 +294,7 @@ Identifique quais destes erros você está cometendo (seja brutalmente honesta):
 
 **Por que não funciona:** Seu cliente fica no escuro. Não consegue visualizar. Não confia.
 
-**Você comete esse erro?** ☐ Sim  ☐ Não
+**Você comete esse erro?** {{checkbox:m1_err7_sim:Sim}}  {{checkbox:m1_err7_nao:Não}}
 
 ---
 
@@ -3618,7 +3619,7 @@ export default function Module() {
               </CardHeader>
               <CardContent>
                 <div className="prose prose-neutral max-w-none">
-                  <Streamdown>{currentLesson.content}</Streamdown>
+                  <RichContentRenderer content={currentLesson.content} moduleId={`modulo-${moduleId}`} />
                 </div>
               </CardContent>
             </Card>
