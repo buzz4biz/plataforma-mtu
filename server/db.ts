@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/libsql";
 import { createClient } from "@libsql/client";
 import { InsertUser, users } from "../drizzle/schema";
@@ -6,6 +6,63 @@ import { ENV } from './_core/env';
 import path from "path";
 
 let _db: ReturnType<typeof drizzle> | null = null;
+let _initialized = false;
+
+// Initialize database tables
+async function initializeTables(db: ReturnType<typeof drizzle>) {
+  if (_initialized) return;
+  
+  try {
+    console.log("[Database] Initializing tables...");
+    
+    // Create users table
+    await db.run(sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        loginMethod TEXT NOT NULL DEFAULT 'local',
+        role TEXT NOT NULL DEFAULT 'user',
+        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // Create user_progress table
+    await db.run(sql`
+      CREATE TABLE IF NOT EXISTS user_progress (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL,
+        moduleId TEXT NOT NULL,
+        completed INTEGER NOT NULL DEFAULT 0,
+        completedAt TEXT,
+        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+    
+    // Create exercise_responses table
+    await db.run(sql`
+      CREATE TABLE IF NOT EXISTS exercise_responses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId INTEGER NOT NULL,
+        moduleId TEXT NOT NULL,
+        exerciseId TEXT NOT NULL,
+        response TEXT NOT NULL,
+        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
+      )
+    `);
+    
+    _initialized = true;
+    console.log("[Database] ✓ Tables initialized successfully");
+  } catch (error) {
+    console.error("[Database] Failed to initialize tables:", error);
+  }
+}
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
@@ -20,6 +77,9 @@ export async function getDb() {
       }
       const client = createClient({ url: dbUrl });
       _db = drizzle(client);
+      
+      // Initialize tables on first connection
+      await initializeTables(_db);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
