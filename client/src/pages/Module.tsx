@@ -19,7 +19,7 @@ import {
   Download,
   Loader2
 } from "lucide-react";
-import { Link, useParams } from "wouter";
+import { Link, useParams, useLocation } from "wouter";
 import { useState, useEffect } from "react";
 import { Streamdown } from "streamdown";
 import { trpc } from "@/lib/trpc";
@@ -3402,6 +3402,7 @@ Use estes insights ao criar/refinar seu Mecanismo Terapêutico Único.
 
 export default function Module() {
   const params = useParams();
+  const [, setLocation] = useLocation();
   const moduleId = params.id || "1";
   const module = moduleContent[moduleId];
   
@@ -3410,6 +3411,7 @@ export default function Module() {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   
   // API hooks
+  const utils = trpc.useUtils();
   const { data: user } = trpc.auth.me.useQuery();
   const { data: progressData, refetch: refetchProgress } = trpc.progress.getByModule.useQuery(
     { moduleId: `modulo-${moduleId}` },
@@ -3491,21 +3493,23 @@ export default function Module() {
           await awardBadgeMutation.mutateAsync({ badgeId });
         }
         
-        // Force refetch progress before navigating
+        // Force refetch progress and invalidate all progress queries
         await refetchProgress();
+        await utils.progress.getAll.invalidate();
+        await utils.progress.getStats.invalidate();
         
         toast.success("Módulo concluído com sucesso!");
         
-        // Small delay to ensure data is updated
+        // Navigate using wouter to preserve cache
         setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 500);
+          setLocation("/dashboard");
+        }, 300);
       } catch (error) {
         console.error("Error completing module:", error);
         toast.error("Erro ao salvar progresso do módulo");
       }
     } else {
-      window.location.href = "/dashboard";
+      setLocation("/dashboard");
     }
   };
 
