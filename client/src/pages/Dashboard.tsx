@@ -113,8 +113,11 @@ export default function Dashboard() {
     ?.filter(p => p.lessonId === "_module_complete" && p.completed === 1)
     .map(p => p.moduleId) || [];
 
+  console.log("[Dashboard] User:", user?.id);
   console.log("[Dashboard] Progress data:", progressData);
+  console.log("[Dashboard] Stats data:", statsData);
   console.log("[Dashboard] Completed module IDs:", completedModuleIds);
+  console.log("[Dashboard] Loading states:", { progressLoading, statsLoading, badgesLoading });
 
   // Encontrar módulo em andamento (com progresso mas não completo)
   const getModuleInProgress = () => {

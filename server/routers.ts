@@ -141,6 +141,8 @@ export const appRouter = router({
       if (!db) return { completedModules: 0, totalModules: 7, progressPercentage: 0, completedLessons: 0 };
       const userId = ctx.user.id;
       
+      console.log("[Stats] Getting stats for user:", userId);
+      
       const completedModules = await db.select().from(userProgress).where(
         and(
           eq(userProgress.userId, userId),
@@ -149,6 +151,8 @@ export const appRouter = router({
         )
       );
       
+      console.log("[Stats] Completed modules:", completedModules);
+      
       const completedLessons = await db.select().from(userProgress).where(
         and(eq(userProgress.userId, userId), eq(userProgress.completed, 1))
       );
@@ -156,6 +160,8 @@ export const appRouter = router({
       const totalModules = 7;
       const completedModulesCount = completedModules.length;
       const progressPercentage = Math.round((completedModulesCount / totalModules) * 100);
+      
+      console.log("[Stats] Result:", { completedModulesCount, totalModules, progressPercentage, completedLessons: completedLessons.length });
       
       return { completedModules: completedModulesCount, totalModules, progressPercentage, completedLessons: completedLessons.length };
     }),
