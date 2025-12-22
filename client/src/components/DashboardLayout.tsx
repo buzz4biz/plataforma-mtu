@@ -34,7 +34,8 @@ import {
   Award,
   ChevronDown,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  HelpCircle
 } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -331,7 +332,7 @@ function DashboardLayoutContent({
               {/* AI Assistant */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  onClick={() => window.open('https://plataforma-protocolo-mtu.manus.space/assistente', '_blank')}
+                  onClick={() => window.open('https://plataforma-mtu.onrender.com/assistente', '_blank')}
                   tooltip="Assistente IA"
                   className="h-10"
                 >
@@ -340,6 +341,19 @@ function DashboardLayoutContent({
                   {!isCollapsed && (
                     <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded">Novo</span>
                   )}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* FAQ */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={isActive('/faq')}
+                  onClick={() => setLocation('/faq')}
+                  tooltip="FAQ"
+                  className="h-10"
+                >
+                  <HelpCircle className="h-5 w-5" />
+                  <span className="flex-1">FAQ</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 

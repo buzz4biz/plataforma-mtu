@@ -111,6 +111,8 @@ export const appRouter = router({
         if (!db) return { success: false, error: "Database not available" };
         const userId = ctx.user.id;
         
+        console.log("[Progress] Completing module:", { userId, moduleId: input.moduleId });
+        
         const existing = await db.select().from(userProgress).where(
           and(
             eq(userProgress.userId, userId),
@@ -127,6 +129,9 @@ export const appRouter = router({
             completed: 1,
             completedAt: new Date(),
           });
+          console.log("[Progress] Module completion saved");
+        } else {
+          console.log("[Progress] Module already completed");
         }
         return { success: true };
       }),

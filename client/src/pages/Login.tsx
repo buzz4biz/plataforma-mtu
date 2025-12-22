@@ -8,12 +8,15 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2, Lock, Mail, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { trpc } from "@/lib/trpc";
+import ResetPasswordDialog from "@/components/ResetPasswordDialog";
 
 export default function Login() {
   const [, navigate] = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showResetDialog, setShowResetDialog] = useState(false);
+  const [loginError, setLoginError] = useState(false);
   const utils = trpc.useUtils();
 
   // Check if user is already authenticated
@@ -28,10 +31,12 @@ export default function Login() {
   const loginMutation = trpc.auth.login.useMutation({
     onSuccess: async () => {
       toast.success("Login realizado com sucesso!");
+      setLoginError(false);
       // Force page reload to ensure authentication state is updated
       window.location.href = "/dashboard";
     },
     onError: (error: any) => {
+      setLoginError(true);
       toast.error(error.message || "Email ou senha incorretos");
     },
   });
@@ -104,6 +109,18 @@ export default function Login() {
               </div>
             </div>
 
+            {loginError && (
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowResetDialog(true)}
+                  className="text-sm text-primary hover:underline"
+                >
+                  Esqueci minha senha
+                </button>
+              </div>
+            )}
+
             <Button
               type="submit"
               className="w-full"
@@ -134,6 +151,11 @@ export default function Login() {
           </div>
         </CardContent>
       </Card>
+
+      <ResetPasswordDialog 
+        open={showResetDialog} 
+        onOpenChange={setShowResetDialog}
+      />
     </div>
   );
 }

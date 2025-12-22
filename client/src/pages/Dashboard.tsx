@@ -113,13 +113,47 @@ export default function Dashboard() {
     ?.filter(p => p.lessonId === "_module_complete" && p.completed === 1)
     .map(p => p.moduleId) || [];
 
-  // Encontrar próximo módulo
+  console.log("[Dashboard] Progress data:", progressData);
+  console.log("[Dashboard] Completed module IDs:", completedModuleIds);
+
+  // Encontrar módulo em andamento (com progresso mas não completo)
+  const getModuleInProgress = () => {
+    if (!progressData) return null;
+    
+    // Procurar módulos com lições completadas mas não completamente finalizados
+    for (const mod of moduleDefinitions) {
+      const moduleProgress = progressData.filter(p => 
+        p.moduleId === mod.id && 
+        p.lessonId !== "_module_complete" &&
+        p.completed === 1
+      );
+      
+      const isModuleComplete = completedModuleIds.includes(mod.id);
+      
+      // Se tem progresso e não está completo, é o módulo em andamento
+      if (moduleProgress.length > 0 && !isModuleComplete) {
+        return mod;
+      }
+    }
+    return null;
+  };
+
+  // Encontrar próximo módulo (não iniciado ou em andamento)
   const getNextModule = () => {
+    // Primeiro, verificar se há um módulo em andamento
+    const inProgress = getModuleInProgress();
+    if (inProgress) {
+      return inProgress;
+    }
+    
+    // Se não há módulo em andamento, pegar o primeiro não completo
     for (const mod of moduleDefinitions) {
       if (!completedModuleIds.includes(mod.id)) {
         return mod;
       }
     }
+    
+    // Se todos completos, voltar ao primeiro
     return moduleDefinitions[0];
   };
 
@@ -204,7 +238,7 @@ export default function Dashboard() {
                 asChild 
                 className="bg-primary hover:bg-primary/90 gap-2 whitespace-nowrap"
               >
-                <a href="https://plataforma-protocolo-mtu.manus.space/assistente" target="_blank" rel="noopener noreferrer">
+                <a href="https://plataforma-mtu.onrender.com/assistente" target="_blank" rel="noopener noreferrer">
                   <Sparkles className="h-4 w-4" />
                   Acessar Assistente IA
                 </a>

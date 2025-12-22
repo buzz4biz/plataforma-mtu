@@ -1030,7 +1030,7 @@ export default function Bonus() {
           </Button>
           
           <Button asChild className="bg-primary hover:bg-primary/90">
-            <a href="https://plataforma-protocolo-mtu.manus.space/assistente" target="_blank" rel="noopener noreferrer">
+            <a href="https://plataforma-mtu.onrender.com/assistente" target="_blank" rel="noopener noreferrer">
               Usar com Assistente IA
               <ExternalLink className="h-4 w-4 ml-1" />
             </a>

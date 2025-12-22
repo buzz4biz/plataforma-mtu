@@ -221,4 +221,54 @@ export const authRouter = router({
       role: ctx.user.role,
     };
   }),
+
+  resetPassword: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email("Email inválido"),
+        newPassword: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const db = await getDb();
+      if (!db) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Banco de dados não disponível",
+        });
+      }
+
+      // Find user by email
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, input.email))
+        .limit(1);
+
+      if (!user) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Usuário não encontrado com este email",
+        });
+      }
+
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(input.newPassword, 10);
+
+      // Update user password
+      await db
+        .update(users)
+        .set({ password: hashedPassword })
+        .where(eq(users.id, user.id));
+
+      console.log("[Auth] Password reset successful:", {
+        userId: user.id,
+        email: user.email,
+      });
+
+      return {
+        success: true,
+        message: "Senha redefinida com sucesso",
+      };
+    }),
 });
