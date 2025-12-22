@@ -15,16 +15,15 @@ import {
   Clock,
   Target,
   Lightbulb,
-  ArrowRight,
   ArrowLeft,
-  Download
+  Download,
+  Loader2
 } from "lucide-react";
 import { Link, useParams } from "wouter";
 import { useState, useEffect } from "react";
 import { Streamdown } from "streamdown";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
-import { exportModuleToPDF, ExerciseResponse } from "@/lib/pdfExport";
 
 // Module content data
 const moduleContent: Record<string, {
@@ -210,11 +209,13 @@ Marque uma opção:
 
 ### 🎯 INTERPRETAÇÃO
 
-Se você respondeu principalmente com credenciais, não explica processo, e sua mensagem parece igual aos outros - **você está invisível por falta de mecanismo único.**`,
+Se você respondeu principalmente com credenciais, não explica processo, e sua mensagem parece igual aos outros - **você está invisível por falta de mecanismo único.**
+
+> **Use o Assistente IA:** Peça para ele analisar sua comunicação atual e identificar pontos de melhoria.`,
         exercise: {
           title: "Análise da Sua Comunicação",
-          description: "Complete suas respostas às perguntas acima.",
-          type: "textarea"
+          description: "Complete o exercício acima refletindo sobre sua mensagem atual. Use o Assistente IA para aprofundar.",
+          type: "reflection"
         }
       },
       {
@@ -491,6 +492,10 @@ Responda cada pergunta com **TOTAL honestidade e especificidade**. Respostas vag
 4. Revise e refine suas respostas no final
 5. Use as respostas para construir seu mecanismo
 
+### 💡 Dica Importante
+
+Use o **Assistente IA do Protocolo MTU** para responder essas perguntas de forma guiada. Ele vai te ajudar a extrair insights profundos e refinar suas respostas.
+
 ---
 
 ## PERGUNTA 1: Qual Problema Específico Você Resolve?
@@ -513,6 +518,8 @@ Seu mecanismo precisa estar ancorado em um problema específico e tangível. Nã
 * ☐ O problema tem contexto (quando acontece, onde, com quem)?
 * ☐ Você usou palavras que o próprio cliente usaria?
 * ☐ Está claro o que o problema impede/causa na vida da pessoa?
+
+> **Use o Assistente IA:** Peça para ele te ajudar a tornar sua resposta mais específica e tangível.
 
 ---
 
@@ -541,6 +548,8 @@ Mecanismos fortes não tratam sintomas - tratam causas. Você precisa ter clarez
 ### 💡 DICA
 
 Use linguagem que conecta o problema a um **MECANISMO** (sistema nervoso, padrão cognitivo, resposta automática, memória, etc.). Isso já começa a criar seu mecanismo único.
+
+> **Use o Assistente IA:** Peça para ele te ajudar a identificar as camadas do problema.
 
 ---
 
@@ -576,6 +585,8 @@ Use linguagem que conecta o problema a um **MECANISMO** (sistema nervoso, padrã
 
 Se você não tem um processo estruturado agora, **CRIE um** baseado no que você já faz. Todo terapeuta tem um processo - você só nunca o nomeou.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a estruturar e nomear cada fase do seu processo.
+
 ---
 
 ## PERGUNTA 4: O Que Torna Seu Processo Diferente do Que Outros Fazem?
@@ -604,6 +615,8 @@ Aqui você identifica seu diferencial específico. Não precisa ser revolucioná
 
 **Abordagem contra-intuitiva:** "Não luto contra a ansiedade, ensino a usá-la como sinal"
 
+> **Use o Assistente IA:** Peça para ele te ajudar a identificar e articular seu diferencial único.
+
 ---
 
 ## PERGUNTA 5: Qual a Transformação Que Acontece? (Do Estado A para o Estado B)
@@ -630,6 +643,8 @@ Mecanismos fortes mostram transformação clara. De onde a pessoa sai e onde ela
 **DURANTE:** O que muda ao longo do processo
 
 **DEPOIS:** Como a pessoa pensa, sente, age agora
+
+> **Use o Assistente IA:** Peça para ele te ajudar a descrever a transformação de forma tangível e específica.
 
 ---
 
@@ -662,6 +677,8 @@ Esta é a pergunta da **credibilidade**. Você precisa explicar a lógica/ciênc
 ### 💡 DICA
 
 Use linguagem que seu cliente entenda, mas mantenha a sofisticação. Você quer soar científico SEM ser técnico demais.
+
+> **Use o Assistente IA:** Peça para ele te ajudar a articular a lógica do seu processo de forma clara e científica.
 
 ---
 
@@ -701,6 +718,8 @@ Dar um nome ao seu processo é **transformador**. Cria propriedade, memorabilida
 * ☐ Único (você não ouviu isso antes)
 * ☐ Pode ser abreviado (MTR, PSA, etc.)
 
+> **Use o Assistente IA:** Peça para ele te ajudar a criar e refinar o nome do seu mecanismo.
+
 ---
 
 ## SÍNTESE: Monte Seu Mecanismo Único Completo
@@ -732,10 +751,12 @@ Você acabou de criar seu **Mecanismo Terapêutico Único**. Agora você tem alg
 Continue para as próximas lições para:
 * Ver exemplos de MTU em diferentes nichos
 * Aprender fórmulas completas de nomenclatura
-* Validar e refinar seu mecanismo`,
+* Validar e refinar seu mecanismo
+
+> **Use o Assistente IA:** Peça para ele te ajudar a refinar e validar seu mecanismo completo.`,
         exercise: {
           title: "Complete o Framework de 7 Perguntas",
-          description: "Responda todas as perguntas abaixo para extrair seu Mecanismo Terapêutico Único.",
+          description: "Responda todas as perguntas abaixo para extrair seu Mecanismo Terapêutico Único. Use o Assistente IA para te ajudar a refinar suas respostas.",
           type: "textarea",
           items: []
         }
@@ -1463,6 +1484,7 @@ Protocolo de Recalibração de Limites | 8-12 sessões
 
 Teste os 3 templates e peça feedback de 3 pessoas. Escolha o que gera mais perguntas curiosas ('Como funciona isso?').
 
+> **Use o Assistente IA:** Peça para ele te ajudar a preencher e refinar cada template.`,
         exercise: {
           title: "Crie Suas 3 Versões de Bio",
           description: "Preencha os 3 templates e escolha o melhor para usar.",
@@ -1651,6 +1673,7 @@ Diferente da maioria das abordagens que [O QUE OUTROS FAZEM], o [NOME DO MECANIS
 **CTA FINAL:**
 Pronto para começar? Agende sua conversa inicial gratuita para avaliarmos se este é o caminho certo para você. [LINK]
 
+> **Use o Assistente IA:** Peça para ele te ajudar a preencher cada seção do site com base no seu MTU.`,
         exercise: {
           title: "Preencha Estrutura do Site",
           description: "Complete os scripts das 3 páginas essenciais do seu site.",
@@ -1772,6 +1795,7 @@ _[Responda objeções - veja próxima lição]_
 
 Pratique este script **5 vezes** (sozinha ou com colega) antes de usar com clientes reais. A fluência vem da prática.
 
+> **Use o Assistente IA:** Peça para ele simular ser um potencial cliente para você praticar.`,
         exercise: {
           title: "Pratique o Script de Primeira Conversa",
           description: "Adapte o script ao seu MTU e pratique até ficar natural.",
@@ -1883,6 +1907,7 @@ _[ESCUTE]_
 3. Pratique falar naturalmente (não memorize palavra por palavra)
 4. Mantenha o tom empático e profissional
 
+> **Use o Assistente IA:** Peça para ele simular objeções para você praticar suas respostas.`,
         exercise: {
           title: "Prepare Suas Respostas para Objeções",
           description: "Personalize cada resposta com informações do seu MTU.",
@@ -2033,6 +2058,7 @@ A partir daí, **alterne entre as 5 fórmulas** criando 1-2 posts por semana.
 * ✓ Mencionar seu mecanismo naturalmente (não forçado)
 * ✓ Ter valor mesmo para quem não vai te contratar
 
+> **Use o Assistente IA:** Peça para ele te ajudar a criar posts usando cada uma das 5 fórmulas com base no seu MTU.`,
         exercise: {
           title: "Crie Seu Banco de Posts",
           description: "Crie pelo menos 1 post usando cada fórmula para começar.",
@@ -2275,6 +2301,7 @@ Preencher planilha de resultados:
 
 Você implementou, testou e tem **dados reais**. Agora está pronta para refinar e ganhar tração.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a analisar os resultados dos 30 dias e identificar ajustes necessários.`,
         exercise: {
           title: "Complete os Primeiros 30 Dias",
           description: "Siga o cronograma semana a semana e documente seus resultados.",
@@ -2423,6 +2450,7 @@ Você implementou, testou e tem **dados reais**. Agora está pronta para refinar
 
 Você tem **rotina estabelecida**, conversões consistentes e **autoridade crescente**.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a criar um banco de posts para as próximas semanas usando as 5 fórmulas.`,
         exercise: {
           title: "Complete os Dias 31-60",
           description: "Estabeleça rotina consistente e ganhe tração.",
@@ -2592,7 +2620,9 @@ Se você seguiu este plano, você agora tem:
 * ✅ Mecanismo testado e refinado com dados reais
 * ✅ Pipeline de aquisição funcionando
 * ✅ Autoridade crescente no nicho
-* ✅ Sistemas automatizados economizando tempo`,
+* ✅ Sistemas automatizados economizando tempo
+
+> **Use o Assistente IA:** Peça para ele te ajudar a analisar seus 90 dias completos e planejar os próximos passos.`,
         exercise: {
           title: "Reflexão Completa dos 90 Dias",
           description: "Escreva uma reflexão profunda sobre sua jornada completa nos últimos 90 dias. O que mudou? O que você aprendeu? Quais foram os maiores desafios e conquistas? Como você se sente em relação ao seu MTU agora?",
@@ -2751,6 +2781,8 @@ Este é apenas o começo. **Implementação consistente** é o que separa quem t
 
 Você tem as ferramentas. Agora é **executar**.
 
+> **Use o Assistente IA sempre que precisar:** Ele está aqui para te apoiar em cada etapa da jornada.
+
 **Sucesso! 🎉**`,
         exercise: {
           title: "Planeje Seus Próximos 90 Dias",
@@ -2858,6 +2890,7 @@ Preencha abaixo:
 
 Depois de selecionar seus 5 concorrentes, vá para a próxima lição para analisar a comunicação deles.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a identificar concorrentes relevantes no seu nicho.`,
         exercise: {
           title: "Selecione Seus 5 Concorrentes",
           description: "Liste os 5 concorrentes que você vai analisar.",
@@ -2983,6 +3016,7 @@ Visite o site de cada concorrente (se tiverem) e mapeie a estrutura.
 
 Maioria não tem site OU tem site genérico = **oportunidade de profissionalismo superior**.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a analisar e categorizar os padrões que você identificou.`,
         exercise: {
           title: "Complete a Análise de Comunicação",
           description: "Analise como cada concorrente se comunica.",
@@ -3091,6 +3125,7 @@ _________________________________________________________________________
 
 Se ninguém explica COMO trabalha, você tem **oportunidade de ouro** ao comunicar seu mecanismo.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a identificar gaps de posicionamento únicos.`,
         exercise: {
           title: "Analise Posicionamento dos Concorrentes",
           description: "Identifique como cada um se posiciona e se diferencia.",
@@ -3220,6 +3255,7 @@ Que tipo de conteúdo cada concorrente produz? Frequência? Qualidade?
 **Maior oportunidade de conteúdo não explorada:**
 _________________________________________________________________________
 
+> **Use o Assistente IA:** Peça para ele te ajudar a identificar oportunidades de conteúdo que seus concorrentes não estão explorando.`,
         exercise: {
           title: "Analise Mecanismos e Conteúdo",
           description: "Identifique se concorrentes têm mecanismos únicos e como produzem conteúdo.",
@@ -3345,6 +3381,7 @@ Você agora tem **visão cristalina do mercado** e sabe exatamente onde se posic
 
 Use estes insights ao criar/refinar seu Mecanismo Terapêutico Único.
 
+> **Use o Assistente IA:** Peça para ele te ajudar a sintetizar todos os insights e criar seu plano de diferenciação estratégico.`,
         exercise: {
           title: "Complete a Síntese Estratégica",
           description: "Transforme toda a análise em insights acionáveis.",
@@ -3371,7 +3408,6 @@ export default function Module() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
-  const [isExportingPDF, setIsExportingPDF] = useState(false);
   
   // API hooks
   const { data: user } = trpc.auth.me.useQuery();
@@ -3379,9 +3415,6 @@ export default function Module() {
     { moduleId: `modulo-${moduleId}` },
     { enabled: !!user }
   );
-  const { data: allExercises } = trpc.exercises.getAll.useQuery(undefined, {
-    enabled: !!user,
-  });
   const completeLessonMutation = trpc.progress.completeLesson.useMutation();
   const completeModuleMutation = trpc.progress.completeModule.useMutation();
   const awardBadgeMutation = trpc.badges.award.useMutation();
@@ -3395,24 +3428,8 @@ export default function Module() {
         .map(p => p.lessonId)
         .filter((id): id is string => id !== null);
       setCompletedLessons(completed);
-      
-      // Se tem progresso mas não completou o módulo, ir para a próxima lição não completada
-      if (completed.length > 0 && currentLessonIndex === 0) {
-        const firstIncompleteIndex = module.lessons.findIndex(
-          lesson => !completed.includes(lesson.id)
-        );
-        
-        // Se encontrou uma lição não completada, vai pra ela
-        // Se não encontrou (todas completas), fica na última
-        if (firstIncompleteIndex !== -1) {
-          setCurrentLessonIndex(firstIncompleteIndex);
-        } else if (completed.length === module.lessons.length) {
-          // Se todas estão completas, vai para a última lição
-          setCurrentLessonIndex(module.lessons.length - 1);
-        }
-      }
     }
-  }, [progressData, module.lessons]);
+  }, [progressData]);
 
   if (!module) {
     return (
@@ -3462,9 +3479,6 @@ export default function Module() {
           moduleId: `modulo-${moduleId}`,
         });
         
-        // Refetch progress to update state
-        await refetchProgress();
-        
         // Award badge based on module
         const badgeMap: Record<string, string> = {
           "1": "diagnostico-completo",
@@ -3477,20 +3491,15 @@ export default function Module() {
           await awardBadgeMutation.mutateAsync({ badgeId });
         }
         
-        toast.success("Módulo concluído com sucesso! Redirecionando...");
-        
-        // Wait a moment before redirecting
-        setTimeout(() => {
-          window.location.href = "/dashboard";
-        }, 1500);
+        toast.success("Módulo concluído com sucesso!");
       } catch (error) {
         console.error("Error completing module:", error);
         toast.error("Erro ao salvar progresso do módulo");
       }
-    } else {
-      // If not logged in, just navigate
-      window.location.href = "/dashboard";
     }
+    
+    // Navigate to dashboard
+    window.location.href = "/dashboard";
   };
 
   const currentLesson = module.lessons[currentLessonIndex];
@@ -3515,16 +3524,12 @@ export default function Module() {
     }
     if (currentLessonIndex < module.lessons.length - 1) {
       setCurrentLessonIndex(currentLessonIndex + 1);
-      // Scroll to top when changing lesson
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const handlePrevLesson = () => {
     if (currentLessonIndex > 0) {
       setCurrentLessonIndex(currentLessonIndex - 1);
-      // Scroll to top when changing lesson
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -3533,61 +3538,6 @@ export default function Module() {
       ...prev,
       [item]: !prev[item]
     }));
-  };
-
-  const handleExportPDF = async () => {
-    if (!user) {
-      toast.error("Você precisa estar logado para exportar");
-      return;
-    }
-
-    if (!allExercises || allExercises.length === 0) {
-      toast.error("Nenhuma resposta encontrada para exportar");
-      return;
-    }
-
-    setIsExportingPDF(true);
-    try {
-      // Filtrar exercícios deste módulo
-      const moduleExercises = allExercises.filter(
-        (ex) => ex.moduleId === moduleId
-      );
-
-      if (moduleExercises.length === 0) {
-        toast.error("Você ainda não respondeu nenhum exercício neste módulo");
-        setIsExportingPDF(false);
-        return;
-      }
-
-      // Mapear para o formato do PDF
-      const exercisesForPDF: ExerciseResponse[] = moduleExercises.map((ex) => {
-        const lesson = module.lessons.find((l) => l.id === ex.exerciseId);
-        return {
-          exerciseId: ex.exerciseId,
-          lessonTitle: lesson?.title || "Lição",
-          exerciseTitle: lesson?.exercise?.title || "Exercício",
-          response: ex.response || "",
-        };
-      });
-
-      const success = await exportModuleToPDF(
-        module.title,
-        module.subtitle,
-        exercisesForPDF,
-        `${module.subtitle.toLowerCase().replace(/\s+/g, "-")}-respostas.pdf`
-      );
-
-      if (success) {
-        toast.success("PDF exportado com sucesso!");
-      } else {
-        toast.error("Erro ao exportar PDF");
-      }
-    } catch (error) {
-      console.error("Error exporting PDF:", error);
-      toast.error("Erro ao exportar PDF");
-    } finally {
-      setIsExportingPDF(false);
-    }
   };
 
   return (
@@ -3608,30 +3558,9 @@ export default function Module() {
               <h1 className="text-3xl font-display font-bold mt-1">{module.title}</h1>
               <p className="text-muted-foreground mt-2">{module.description}</p>
             </div>
-            <div className="flex flex-col gap-2 items-end">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Clock className="h-4 w-4" />
-                {module.duration}
-              </div>
-              <Button
-                onClick={handleExportPDF}
-                variant="outline"
-                size="sm"
-                disabled={isExportingPDF || !user}
-                className="text-xs"
-              >
-                {isExportingPDF ? (
-                  <>
-                    <Loader2 className="h-3 w-3 mr-1 animate-spin" />
-                    Exportando...
-                  </>
-                ) : (
-                  <>
-                    <Download className="h-3 w-3 mr-1" />
-                    Baixar PDF
-                  </>
-                )}
-              </Button>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4" />
+              {module.duration}
             </div>
           </div>
         </div>
@@ -3723,13 +3652,9 @@ export default function Module() {
                     </div>
                   )}
                   {currentLesson.exercise.type === "reflection" && (
-                    <AutoSaveTextarea
-                      moduleId={moduleId}
-                      exerciseId={currentLesson.id}
-                      placeholder={currentLesson.exercise.description || "Digite sua resposta aqui..."}
-                      minHeight="200px"
-                      label={currentLesson.exercise.title}
-                    />
+                    <p className="text-sm text-muted-foreground italic">
+                      Reserve um momento para refletir sobre esta questão antes de continuar.
+                    </p>
                   )}
                   {currentLesson.exercise.type === "textarea" && (
                     <AutoSaveTextarea
