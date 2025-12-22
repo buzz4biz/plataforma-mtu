@@ -66,6 +66,10 @@ async function initializeTables(db: ReturnType<typeof drizzle>) {
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
+  if (!_db) {
+    console.log("[Database] getDb called, DATABASE_URL:", process.env.DATABASE_URL ? "SET" : "NOT SET");
+  }
+  
   if (!_db && process.env.DATABASE_URL) {
     try {
       let dbUrl = process.env.DATABASE_URL;
