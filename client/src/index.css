@@ -42,81 +42,81 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-display: "Playfair Display", serif;
   --font-body: "Source Sans 3", sans-serif;
-  --color-gold: oklch(0.75 0.14 85);
-  --color-dark-blue: oklch(0.20 0.04 260);
-  --color-medium-blue: oklch(0.35 0.05 250);
-  --color-cream: oklch(0.97 0.01 90);
+  --color-gold: #d6a62e;
+  --color-dark-blue: #0b1628;
+  --color-medium-blue: #263c54;
+  --color-cream: #f8f5ee;
 }
 
 :root {
-  --primary: oklch(0.75 0.14 85);
-  --primary-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.70 0.13 85);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --chart-1: oklch(0.80 0.15 85);
-  --chart-2: oklch(0.75 0.14 85);
-  --chart-3: oklch(0.70 0.13 85);
-  --chart-4: oklch(0.65 0.12 85);
-  --chart-5: oklch(0.60 0.11 85);
+  --primary: #d6a62e;
+  --primary-foreground: #f8f8f8;
+  --sidebar-primary: #c3972a;
+  --sidebar-primary-foreground: #f8f8f8;
+  --chart-1: #eab532;
+  --chart-2: #d6a62e;
+  --chart-3: #c3972a;
+  --chart-4: #b18827;
+  --chart-5: #9e7a23;
   --radius: 0.25rem;
-  --background: oklch(0.97 0.01 90);
-  --foreground: oklch(0.20 0.02 60);
-  --card: oklch(0.995 0 0);
-  --card-foreground: oklch(0.20 0.02 60);
-  --popover: oklch(0.995 0 0);
-  --popover-foreground: oklch(0.20 0.02 60);
-  --secondary: oklch(0.35 0.05 250);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.94 0.005 90);
-  --muted-foreground: oklch(0.45 0.02 60);
-  --accent: oklch(0.75 0.14 85);
-  --accent-foreground: oklch(0.98 0 0);
-  --destructive: oklch(0.55 0.22 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.88 0.01 90);
-  --input: oklch(0.96 0.005 90);
-  --ring: oklch(0.75 0.14 85);
-  --sidebar: oklch(0.20 0.04 260);
-  --sidebar-foreground: oklch(0.95 0.005 90);
-  --sidebar-accent: oklch(0.75 0.14 85);
-  --sidebar-accent-foreground: oklch(0.20 0.04 260);
-  --sidebar-border: oklch(0.28 0.04 260);
-  --sidebar-ring: oklch(0.75 0.14 85);
+  --background: #f8f5ee;
+  --foreground: #1d140d;
+  --card: #fdfdfd;
+  --card-foreground: #1d140d;
+  --popover: #fdfdfd;
+  --popover-foreground: #1d140d;
+  --secondary: #263c54;
+  --secondary-foreground: #f8f8f8;
+  --muted: #ecebe7;
+  --muted-foreground: #5e534a;
+  --accent: #d6a62e;
+  --accent-foreground: #f8f8f8;
+  --destructive: #d40924;
+  --destructive-foreground: #f8f8f8;
+  --border: #dad7d0;
+  --input: #f3f2ee;
+  --ring: #d6a62e;
+  --sidebar: #0b1628;
+  --sidebar-foreground: #f0eeeb;
+  --sidebar-accent: #d6a62e;
+  --sidebar-accent-foreground: #0b1628;
+  --sidebar-border: #1d293d;
+  --sidebar-ring: #d6a62e;
 }
 
 .dark {
-  --primary: oklch(0.75 0.14 85);
-  --primary-foreground: oklch(0.15 0.02 260);
-  --sidebar-primary: oklch(0.70 0.13 85);
-  --sidebar-primary-foreground: oklch(0.15 0.02 260);
-  --background: oklch(0.15 0.02 260);
-  --foreground: oklch(0.92 0.005 90);
-  --card: oklch(0.20 0.03 260);
-  --card-foreground: oklch(0.92 0.005 90);
-  --popover: oklch(0.20 0.03 260);
-  --popover-foreground: oklch(0.92 0.005 90);
-  --secondary: oklch(0.28 0.03 260);
-  --secondary-foreground: oklch(0.92 0.005 90);
-  --muted: oklch(0.25 0.02 260);
-  --muted-foreground: oklch(0.65 0.01 90);
-  --accent: oklch(0.75 0.14 85);
-  --accent-foreground: oklch(0.15 0.02 260);
-  --destructive: oklch(0.60 0.20 25);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.30 0.02 260);
-  --input: oklch(0.25 0.02 260);
-  --ring: oklch(0.75 0.14 85);
-  --chart-1: oklch(0.80 0.15 85);
-  --chart-2: oklch(0.75 0.14 85);
-  --chart-3: oklch(0.70 0.13 85);
-  --chart-4: oklch(0.65 0.12 85);
-  --chart-5: oklch(0.60 0.11 85);
-  --sidebar: oklch(0.15 0.02 260);
-  --sidebar-foreground: oklch(0.92 0.005 90);
-  --sidebar-accent: oklch(0.25 0.02 260);
-  --sidebar-accent-foreground: oklch(0.92 0.005 90);
-  --sidebar-border: oklch(0.28 0.02 260);
-  --sidebar-ring: oklch(0.75 0.14 85);
+  --primary: #d6a62e;
+  --primary-foreground: #070b14;
+  --sidebar-primary: #c3972a;
+  --sidebar-primary-foreground: #070b14;
+  --background: #070b14;
+  --foreground: #e6e4e1;
+  --card: #0e1624;
+  --card-foreground: #e6e4e1;
+  --popover: #0e1624;
+  --popover-foreground: #e6e4e1;
+  --secondary: #202938;
+  --secondary-foreground: #e6e4e1;
+  --muted: #1c222b;
+  --muted-foreground: #918f88;
+  --accent: #d6a62e;
+  --accent-foreground: #070b14;
+  --destructive: #de3b3d;
+  --destructive-foreground: #f8f8f8;
+  --border: #282e38;
+  --input: #1c222b;
+  --ring: #d6a62e;
+  --chart-1: #eab532;
+  --chart-2: #d6a62e;
+  --chart-3: #c3972a;
+  --chart-4: #b18827;
+  --chart-5: #9e7a23;
+  --sidebar: #070b14;
+  --sidebar-foreground: #e6e4e1;
+  --sidebar-accent: #1c222b;
+  --sidebar-accent-foreground: #e6e4e1;
+  --sidebar-border: #232933;
+  --sidebar-ring: #d6a62e;
 }
 
 @layer base {
@@ -140,8 +140,8 @@
   .sidebar-nav-item.active { @apply text-primary bg-primary/10 border-l-2 border-primary; }
   .custom-scrollbar::-webkit-scrollbar { width: 6px; }
   .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-  .custom-scrollbar::-webkit-scrollbar-thumb { background: oklch(0.75 0.14 85 / 0.3); border-radius: 3px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: oklch(0.75 0.14 85 / 0.5); }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(214, 166, 46, 0.3); border-radius: 3px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(214, 166, 46, 0.5); }
 }
 
 /* Keep long streamed answers inside their flex item instead of clipping the chat bubble. */
@@ -158,4 +158,4 @@
 .animate-fade-in { animation: fadeIn 0.4s ease-out forwards; }
 .animate-slide-in-left { animation: slideInLeft 0.3s ease-out forwards; }
 .animate-pulse-gentle { animation: pulse-gentle 1.5s ease-in-out infinite; }
-.animate-shimmer { background: linear-gradient(90deg, transparent, oklch(0.75 0.14 85 / 0.2), transparent); background-size: 200% 100%; animation: shimmer 2s infinite; }
+.animate-shimmer { background: linear-gradient(90deg, transparent, rgba(214, 166, 46, 0.2), transparent); background-size: 200% 100%; animation: shimmer 2s infinite; }
