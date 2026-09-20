@@ -19,12 +19,16 @@ const FAQ_ITEMS: FAQItem[] = [
     answer: "Terapeutas invisíveis ganham pouco, mesmo sendo bons. O MTU™ resolve isso deixando claro qual é seu diferencial. Quando você comunica seu mecanismo único, atrai clientes que valorizam sua abordagem e pagam mais por ela.",
   },
   {
-    question: "Como funciona o Framework de 7 Perguntas?",
-    answer: "O Framework de 7 Perguntas é uma estrutura prática que extrai seu mecanismo através de perguntas estratégicas: Contexto Básico, Processo Único, Resultados, Gatilhos, Nomeação, Validação e Comunicação. Cada pergunta constrói sobre a anterior para revelar seu diferencial.",
+    question: "Como funciona o Framework de 7 Passos?",
+    answer: "O Framework de 7 Passos é uma estrutura prática para extrair seu mecanismo único. Os sete passos são Contexto Básico, Processo Único, Resultados, Gatilhos e Padrões, Nomeação, Validação e Comunicação. Ao todo, os sete passos reúnem 21 perguntas estratégicas — três perguntas em cada passo — para revelar e organizar seu diferencial.",
+  },
+  {
+    question: "Os 7 passos têm quantas perguntas?",
+    answer: "O framework tem 7 passos que totalizam 21 perguntas. Cada passo aborda uma dimensão do seu mecanismo e contém três perguntas orientadoras para tornar seu processo visível, nomeável e comunicável.",
   },
   {
     question: "Quanto tempo leva para extrair meu mecanismo?",
-    answer: "O processo completo leva cerca de 2-4 semanas, dependendo de quanto tempo você dedica. O Assistente MTU™ pode acelerar isso significativamente, pois ele guia você através de cada etapa de forma estruturada.",
+    answer: "O processo completo leva cerca de 2-4 semanas, dependendo de quanto tempo você dedica. O Assistente MTU™ pode acelerar isso significativamente, pois ele guia você através de cada passo de forma estruturada.",
   },
   {
     question: "Posso usar o Assistente MTU™ para revisar minha comunicação atual?",
@@ -61,7 +65,6 @@ export default function FAQ() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="container py-4">
           <div className="flex items-center justify-between">
@@ -85,10 +88,8 @@ export default function FAQ() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="flex-1 py-8">
         <div className="container max-w-2xl">
-          {/* Intro */}
           <div className="mb-8 text-center">
             <h2 className="text-2xl font-semibold text-foreground mb-3" style={{ fontFamily: "var(--font-display)" }}>
               Entenda o Protocolo MTU™
@@ -98,7 +99,6 @@ export default function FAQ() {
             </p>
           </div>
 
-          {/* FAQ Items */}
           <div className="space-y-3">
             {FAQ_ITEMS.map((item, index) => (
               <Card
@@ -115,8 +115,6 @@ export default function FAQ() {
                       }`}
                     />
                   </div>
-
-                  {/* Answer */}
                   {expandedIndex === index && (
                     <div className="mt-4 pt-4 border-t border-border/30">
                       <p className="text-sm text-muted-foreground leading-relaxed">{item.answer}</p>
@@ -127,11 +125,10 @@ export default function FAQ() {
             ))}
           </div>
 
-          {/* CTA */}
           <div className="mt-12 p-6 rounded-2xl bg-primary/5 border border-primary/20 text-center">
             <h3 className="font-semibold text-foreground mb-2">Pronto para começar?</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Use o Assistente MTU™ para extrair, nomear e comunicar seu mecanismo terapêutico único.
+              Use o Assistente MTU™ para percorrer os 7 passos e responder às 21 perguntas do seu mecanismo.
             </p>
             <Link href="/">
               <Button className="rounded-lg">Ir para o Chat</Button>
