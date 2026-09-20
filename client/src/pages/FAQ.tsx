@@ -20,7 +20,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Como funciona o Framework de 7 Passos?",
-    answer: "O Framework de 7 Passos é uma estrutura prática para extrair seu mecanismo único. Os sete passos são Contexto Básico, Processo Único, Resultados, Gatilhos e Padrões, Nomeação, Validação e Comunicação. Ao todo, os sete passos reúnem 21 perguntas estratégicas — três perguntas em cada passo — para revelar e organizar seu diferencial.",
+    answer: "O Framework de 7 Passos é uma estrutura prática para extrair seu mecanismo único. Os sete passos são Contexto Básico, Processo Único, Resultados, Gatilhos e Padrões, Nomeação, Validação e Comunicação. Ao todo, os sete passos reúnem 21 perguntas estratégicas — três em cada passo — para revelar e organizar seu diferencial.",
   },
   {
     question: "Os 7 passos têm quantas perguntas?",
@@ -79,7 +79,7 @@ export default function FAQ() {
                 <p className="text-sm text-muted-foreground">Perguntas Frequentes</p>
               </div>
             </div>
-            <Link href="/">
+            <Link href="/assistente">
               <Button variant="outline" size="sm" className="rounded-lg">
                 Voltar ao Chat
               </Button>
@@ -115,6 +115,7 @@ export default function FAQ() {
                       }`}
                     />
                   </div>
+
                   {expandedIndex === index && (
                     <div className="mt-4 pt-4 border-t border-border/30">
                       <p className="text-sm text-muted-foreground leading-relaxed">{item.answer}</p>
@@ -130,7 +131,7 @@ export default function FAQ() {
             <p className="text-sm text-muted-foreground mb-4">
               Use o Assistente MTU™ para percorrer os 7 passos e responder às 21 perguntas do seu mecanismo.
             </p>
-            <Link href="/">
+            <Link href="/assistente">
               <Button className="rounded-lg">Ir para o Chat</Button>
             </Link>
           </div>
