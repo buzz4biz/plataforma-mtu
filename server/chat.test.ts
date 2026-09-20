@@ -2,14 +2,14 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
 
-// Mock do invokeGroq
-vi.mock("./_core/groq", () => ({
-  invokeGroq: vi.fn(),
+// Mock do invokeOpenRouter
+vi.mock("./_core/openrouter", () => ({
+  invokeOpenRouter: vi.fn(),
 }));
 
-import { invokeGroq } from "./_core/groq";
+import { invokeOpenRouter } from "./_core/openrouter";
 
-const mockedInvokeGroq = vi.mocked(invokeGroq);
+const mockedInvokeOpenRouter = vi.mocked(invokeOpenRouter);
 
 function createPublicContext(): TrpcContext {
   return {
@@ -29,11 +29,11 @@ describe("chat.sendMessage", () => {
     vi.clearAllMocks();
   });
 
-  it("should return assistant message on successful Groq call", async () => {
+  it("should return assistant message on successful OpenRouter call", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    mockedInvokeGroq.mockResolvedValueOnce({
+    mockedInvokeOpenRouter.mockResolvedValueOnce({
       id: "test-id",
       choices: [
         {
@@ -53,21 +53,21 @@ describe("chat.sendMessage", () => {
 
     expect(result.success).toBe(true);
     expect(result.message).toBe("Olá! Sou o Assistente MTU™. No que posso te ajudar hoje?");
-    expect(mockedInvokeGroq).toHaveBeenCalledTimes(1);
+    expect(mockedInvokeOpenRouter).toHaveBeenCalledTimes(1);
   });
 
-  it("should handle string content from Groq response", async () => {
+  it("should handle string content from OpenRouter response", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    mockedInvokeGroq.mockResolvedValueOnce({
+    mockedInvokeOpenRouter.mockResolvedValueOnce({
       id: "test-id",
       choices: [
         {
           index: 0,
           message: {
             role: "assistant",
-            content: "Resposta completa do Groq",
+            content: "Resposta completa do OpenRouter",
           },
           finish_reason: "stop",
         },
@@ -79,14 +79,14 @@ describe("chat.sendMessage", () => {
     });
 
     expect(result.success).toBe(true);
-    expect(result.message).toBe("Resposta completa do Groq");
+    expect(result.message).toBe("Resposta completa do OpenRouter");
   });
 
-  it("should return error message on Groq failure", async () => {
+  it("should return error message on OpenRouter failure", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    mockedInvokeGroq.mockRejectedValueOnce(new Error("Groq API error"));
+    mockedInvokeOpenRouter.mockRejectedValueOnce(new Error("OpenRouter API error"));
 
     const result = await caller.chat.sendMessage({
       messages: [{ role: "user", content: "Olá" }],
@@ -96,11 +96,11 @@ describe("chat.sendMessage", () => {
     expect(result.message).toBe("Ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.");
   });
 
-  it("should include system prompt with MTU knowledge base in Groq call", async () => {
+  it("should include system prompt with MTU knowledge base in OpenRouter call", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    mockedInvokeGroq.mockResolvedValueOnce({
+    mockedInvokeOpenRouter.mockResolvedValueOnce({
       id: "test-id",
       choices: [
         {
@@ -118,7 +118,7 @@ describe("chat.sendMessage", () => {
       messages: [{ role: "user", content: "Quero extrair meu mecanismo" }],
     });
 
-    expect(mockedInvokeGroq).toHaveBeenCalledWith(
+    expect(mockedInvokeOpenRouter).toHaveBeenCalledWith(
       expect.objectContaining({
         messages: expect.arrayContaining([
           expect.objectContaining({
@@ -134,11 +134,11 @@ describe("chat.sendMessage", () => {
     );
   });
 
-  it("should preserve conversation history in Groq call", async () => {
+  it("should preserve conversation history in OpenRouter call", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    mockedInvokeGroq.mockResolvedValueOnce({
+    mockedInvokeOpenRouter.mockResolvedValueOnce({
       id: "test-id",
       choices: [
         {
@@ -160,7 +160,7 @@ describe("chat.sendMessage", () => {
       ],
     });
 
-    const callArgs = mockedInvokeGroq.mock.calls[0][0];
+    const callArgs = mockedInvokeOpenRouter.mock.calls[0][0];
     const messages = callArgs.messages;
 
     // Should have system message + 3 conversation messages
@@ -171,11 +171,11 @@ describe("chat.sendMessage", () => {
     expect(messages[3]).toEqual({ role: "user", content: "Segunda mensagem" });
   });
 
-  it("should handle empty response from Groq", async () => {
+  it("should handle empty response from OpenRouter", async () => {
     const ctx = createPublicContext();
     const caller = appRouter.createCaller(ctx);
 
-    mockedInvokeGroq.mockResolvedValueOnce({
+    mockedInvokeOpenRouter.mockResolvedValueOnce({
       id: "test-id",
       choices: [],
     });

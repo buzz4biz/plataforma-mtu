@@ -113,7 +113,13 @@ export async function getDb() {
   return _db;
 }
 
-export async function upsertUser(user: InsertUser): Promise<void> {
+type UpsertUser = Omit<InsertUser, "name" | "email" | "loginMethod"> & {
+  name?: string | null;
+  email?: string | null;
+  loginMethod?: string | null;
+};
+
+export async function upsertUser(user: UpsertUser): Promise<void> {
   if (!user.openId) {
     throw new Error("User openId is required for upsert");
   }
@@ -127,16 +133,23 @@ export async function upsertUser(user: InsertUser): Promise<void> {
   try {
     const values: InsertUser = {
       openId: user.openId,
+      name: user.name ?? "Usuário MTU",
+      email: user.email ?? `${user.openId}@oauth.local`,
     };
     const updateSet: Record<string, unknown> = {};
 
     const textFields = ["name", "email", "loginMethod"] as const;
     type TextField = (typeof textFields)[number];
+    const textDefaults: Record<TextField, string> = {
+      name: "Usuário MTU",
+      email: `${user.openId}@oauth.local`,
+      loginMethod: "local",
+    };
 
     const assignNullable = (field: TextField) => {
       const value = user[field];
       if (value === undefined) return;
-      const normalized = value ?? null;
+      const normalized = value ?? textDefaults[field];
       values[field] = normalized;
       updateSet[field] = normalized;
     };
@@ -163,7 +176,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
+    await db.insert(users).values(values).onConflictDoUpdate({
+      target: users.openId,
       set: updateSet,
     });
   } catch (error) {

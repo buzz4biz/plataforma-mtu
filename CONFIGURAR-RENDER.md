@@ -1,4 +1,4 @@
-# Configuração da API Groq no Render
+# Configuração da API OpenRouter no Render
 
 ## Passo a Passo
 
@@ -11,7 +11,7 @@
 
 3. **Configure a variável de ambiente**
    - No menu lateral, clique em **Environment**
-   - Procure pela variável `GROQ_API_KEY`
+   - Procure pela variável `OPENROUTER_API_KEY`
    - Cole o valor da API key fornecida (não commitada no Git por segurança)
    - Clique em **Save Changes**
 
@@ -27,10 +27,10 @@
 
 - ✅ Todos os links do Assistente IA foram atualizados para: `https://plataforma-mtu.onrender.com/assistente`
 - ✅ A configuração da API key já está preparada no código (server/_core/groq.ts)
-- ✅ O render.yaml já tem a variável GROQ_API_KEY configurada
+- ✅ O render.yaml já tem as variáveis OPENROUTER_API_KEY e OPENROUTER_MODEL configuradas
 
 ## 📝 Notas Importantes:
 
-- A API key do Groq é gratuita mas tem limites de uso
+- A OpenRouter usa os limites e preços definidos pelo provedor/modelo selecionado
 - O modelo usado é o `llama-3.3-70b-versatile`
 - Nunca compartilhe a API key publicamente (ela já está segura no .env)

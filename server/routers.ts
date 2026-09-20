@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { MTU_SYSTEM_PROMPT, FULL_KNOWLEDGE_BASE } from "@shared/mtuKnowledge";
 import { getSessionCookieOptions } from "./_core/cookies";
-import { invokeGroq } from "./_core/groq";
+import { invokeOpenRouter } from "./_core/openrouter";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { getDb } from "./db";
@@ -42,12 +42,12 @@ export const appRouter = router({
         ];
 
         try {
-          const response = await invokeGroq({ messages: llmMessages });
+          const response = await invokeOpenRouter({ messages: llmMessages });
           const assistantMessage = response.choices[0]?.message?.content ||
             "Desculpe, não consegui processar sua mensagem. Por favor, tente novamente.";
           return { success: true, message: assistantMessage };
         } catch (error) {
-          console.error("Erro ao chamar Groq:", error);
+          console.error("Erro ao chamar OpenRouter:", error);
           return { success: false, message: "Ocorreu um erro ao processar sua mensagem. Por favor, tente novamente." };
         }
       }),
