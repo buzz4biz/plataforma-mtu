@@ -136,6 +136,17 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    reset: protectedProcedure.mutation(async ({ ctx }) => {
+      const db = await getDb();
+      if (!db) return { success: false, error: "Database not available" };
+      const userId = ctx.user.id;
+
+      await db.delete(userProgress).where(eq(userProgress.userId, userId));
+      await db.delete(userExercises).where(eq(userExercises.userId, userId));
+
+      return { success: true };
+    }),
+
     getStats: protectedProcedure.query(async ({ ctx }) => {
       const db = await getDb();
       if (!db) return { completedModules: 0, totalModules: 7, progressPercentage: 0, completedLessons: 0 };
