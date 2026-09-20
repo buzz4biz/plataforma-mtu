@@ -1,5 +1,5 @@
 // Protocolo MTU™ - Mecanismo Terapêutico Único
-// Versão otimizada para integração com Groq API (limites de token)
+// Versão otimizada para integração com a API OpenRouter
 
 export const MTU_SYSTEM_PROMPT = `Você é o Assistente MTU™, especializado em ajudar terapeutas a descobrir, nomear e comunicar seu Mecanismo Terapêutico Único.
 

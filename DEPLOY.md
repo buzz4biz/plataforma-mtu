@@ -13,7 +13,7 @@
 
 1. **Conta no GitHub** (gratuita)
 2. **Conta no Render** (gratuita - https://render.com)
-3. **Chave da API Groq** (gratuita - https://console.groq.com)
+3. **Chave da API OpenRouter** (https://openrouter.ai/keys)
 
 ---
 
@@ -59,7 +59,8 @@ git push -u origin main
 No dashboard do Render, vá em **Environment**:
 
 ```
-GROQ_API_KEY = sua-chave-da-api-groq
+OPENROUTER_API_KEY = sua-chave-da-api-openrouter
+OPENROUTER_MODEL = z-ai/glm-5.3-flashx
 ```
 
 *Nota: As outras variáveis já estão no render.yaml*

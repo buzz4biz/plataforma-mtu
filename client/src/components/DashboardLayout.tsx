@@ -38,12 +38,26 @@ import {
   HelpCircle
 } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
+import type { LucideIcon } from "lucide-react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 import { trpc } from "@/lib/trpc";
 
-const modules = [
+type SidebarSubItem = {
+  label: string;
+  path: string;
+};
+
+type SidebarModule = {
+  icon: LucideIcon;
+  label: string;
+  path: string;
+  description: string;
+  subItems?: SidebarSubItem[];
+};
+
+const modules: SidebarModule[] = [
   { 
     icon: Target, 
     label: "Módulo 1: Diagnóstico", 

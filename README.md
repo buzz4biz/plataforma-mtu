@@ -12,7 +12,7 @@ Plataforma educacional completa para ensinar empreendedores a criar e vender seu
 
 - ✅ 4 Módulos completos + 3 Bônus
 - ✅ Sistema de autenticação seguro
-- ✅ Chat com IA (Groq/Llama)
+- ✅ Chat com IA (OpenRouter/GLM 5.3 FlashX)
 - ✅ Exercícios interativos com auto-save
 - ✅ Sistema de progresso e conquistas
 - ✅ Exportação de conteúdo em PDF
@@ -24,7 +24,7 @@ Plataforma educacional completa para ensinar empreendedores a criar e vender seu
 - **Frontend**: React 19 + Vite + TailwindCSS
 - **Backend**: Node.js + Express + tRPC
 - **Banco de Dados**: SQLite + Drizzle ORM
-- **IA**: Groq (Llama 3)
+- **IA**: OpenRouter (Z.ai GLM 5.3 FlashX)
 - **Auth**: Express Session + bcrypt
 
 ## 💻 Desenvolvimento Local
@@ -49,7 +49,8 @@ Copie `.env.example` para `.env` e configure:
 ```env
 DATABASE_URL=file:./dev.db
 SESSION_SECRET=sua-chave-secreta-aqui
-GROQ_API_KEY=sua-chave-groq-aqui
+OPENROUTER_API_KEY=sua-chave-openrouter-aqui
+OPENROUTER_MODEL=z-ai/glm-5.3-flashx
 NODE_ENV=development
 ```
 
