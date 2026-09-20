@@ -36,7 +36,7 @@ const moduleDefinitions = [
     id: "modulo-2",
     num: 2,
     title: "Extração do Mecanismo",
-    description: "Use o Framework de 7 Perguntas para extrair e nomear seu Mecanismo Terapêutico Único.",
+    description: "Use o Framework de 7 passos para extrair e nomear seu Mecanismo Terapêutico Único.",
     icon: BookOpen,
     path: "/modulo/2",
     duration: "120 min",
@@ -273,7 +273,7 @@ export default function Dashboard() {
                         <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${isCompleted ? 'bg-primary' : 'bg-muted'}`}>
                           <module.icon className={`h-6 w-6 ${isCompleted ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
                         </div>
-                        {isCompleted ? <CheckCircle2 className="h-6 w-6 text-primary" /> : isCurrent ? <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">Em andamento</span> : <Circle className="h-6 w-6 text-muted-foreground/30" />}
+                        {isCompleted ? <CheckCircle2 className="h-6 w-6 text-primary" /> : isCurrent ? <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">Em andamento</span> : <Circle className="h-6 w-6 text-muted-foreground/50" />}
                       </div>
                       <CardTitle className="font-display text-lg mt-3">Módulo {module.num}: {module.title}</CardTitle>
                       <CardDescription className="line-clamp-2">{module.description}</CardDescription>
