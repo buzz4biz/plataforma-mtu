@@ -13,11 +13,13 @@ import {
   CheckCircle2,
   Circle,
   Play,
-  Loader2
+  Loader2,
+  RotateCcw
 } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const moduleDefinitions = [
   {
@@ -91,23 +93,16 @@ export default function Dashboard() {
   const { data: statsData, isLoading: statsLoading } = trpc.progress.getStats.useQuery(undefined, {
     enabled: !!user,
   });
+  const utils = trpc.useUtils();
+  const resetProgressMutation = trpc.progress.reset.useMutation();
 
-  // Calcular módulos completados
   const completedModuleIds = progressData
     ?.filter(p => p.lessonId === "_module_complete" && p.completed === 1)
     .map(p => p.moduleId) || [];
 
-  console.log("[Dashboard] User:", user?.id);
-  console.log("[Dashboard] Progress data:", progressData);
-  console.log("[Dashboard] Stats data:", statsData);
-  console.log("[Dashboard] Completed module IDs:", completedModuleIds);
-  console.log("[Dashboard] Loading states:", { progressLoading, statsLoading });
-
-  // Encontrar módulo em andamento (com progresso mas não completo)
   const getModuleInProgress = () => {
     if (!progressData) return null;
 
-    // Procurar módulos com lições completadas mas não completamente finalizados
     for (const mod of moduleDefinitions) {
       const moduleProgress = progressData.filter(p =>
         p.moduleId === mod.id &&
@@ -116,8 +111,6 @@ export default function Dashboard() {
       );
 
       const isModuleComplete = completedModuleIds.includes(mod.id);
-
-      // Se tem progresso e não está completo, é o módulo em andamento
       if (moduleProgress.length > 0 && !isModuleComplete) {
         return mod;
       }
@@ -125,30 +118,43 @@ export default function Dashboard() {
     return null;
   };
 
-  // Encontrar próximo módulo (não iniciado ou em andamento)
   const getNextModule = () => {
-    // Primeiro, verificar se há um módulo em andamento
     const inProgress = getModuleInProgress();
-    if (inProgress) {
-      return inProgress;
-    }
+    if (inProgress) return inProgress;
 
-    // Se não há módulo em andamento, pegar o primeiro não completo
     for (const mod of moduleDefinitions) {
       if (!completedModuleIds.includes(mod.id)) {
         return mod;
       }
     }
 
-    // Se todos completos, voltar ao primeiro
     return moduleDefinitions[0];
+  };
+
+  const handleResetProgress = async () => {
+    const confirmed = window.confirm(
+      "Tem certeza que deseja resetar todo o seu progresso? Essa ação apagará as perguntas respondidas e não poderá ser desfeita."
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await resetProgressMutation.mutateAsync();
+      await Promise.all([
+        utils.progress.getAll.invalidate(),
+        utils.progress.getStats.invalidate(),
+      ]);
+      toast.success("Seu progresso foi resetado. Você voltou ao estado inicial.");
+    } catch (error) {
+      console.error("Erro ao resetar progresso:", error);
+      toast.error("Não foi possível resetar seu progresso. Tente novamente.");
+    }
   };
 
   const nextModule = getNextModule();
   const progress = statsData?.progressPercentage || 0;
   const completedModules = statsData?.completedModules || 0;
   const totalModules = 7;
-
   const isLoading = progressLoading || statsLoading;
 
   return (
@@ -185,12 +191,26 @@ export default function Dashboard() {
         {/* Progress Overview */}
         <Card className="border-t-4 border-t-primary">
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <CardTitle className="font-display">Seu Progresso</CardTitle>
                 <CardDescription>Continue sua jornada para se tornar um Mestre MTU</CardDescription>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4 gap-2 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  onClick={handleResetProgress}
+                  disabled={resetProgressMutation.isPending}
+                >
+                  {resetProgressMutation.isPending ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <RotateCcw className="h-4 w-4" />
+                  )}
+                  {resetProgressMutation.isPending ? "Resetando..." : "Resetar progresso"}
+                </Button>
               </div>
-              <div className="text-right">
+              <div className="text-left sm:text-right">
                 {isLoading ? (
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 ) : (
@@ -204,7 +224,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <Progress value={progress} className="h-3 mb-4" />
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:justify-between">
               <span className="text-muted-foreground">{completedModules} de {totalModules} módulos completos</span>
               <span className="text-primary font-medium">Próximo: {nextModule.title}</span>
             </div>
@@ -221,17 +241,10 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="font-display text-xl font-bold text-foreground">
-                  Assistente IA do Protocolo MTU™
-                </h3>
-                <p className="text-muted-foreground mt-1">
-                  Use nosso assistente de IA para extrair seu Mecanismo Terapêutico Único de forma guiada e personalizada.
-                </p>
+                <h3 className="font-display text-xl font-bold text-foreground">Assistente IA do Protocolo MTU™</h3>
+                <p className="text-muted-foreground mt-1">Use nosso assistente de IA para extrair seu Mecanismo Terapêutico Único de forma guiada e personalizada.</p>
               </div>
-              <Button
-                asChild
-                className="bg-primary hover:bg-primary/90 gap-2 whitespace-nowrap"
-              >
+              <Button asChild className="bg-primary hover:bg-primary/90 gap-2 whitespace-nowrap">
                 <a href="https://plataforma-mtu.onrender.com/assistente" target="_blank" rel="noopener noreferrer">
                   <Bot className="h-4 w-4" />
                   Acessar Assistente IA
@@ -260,20 +273,10 @@ export default function Dashboard() {
                         <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${isCompleted ? 'bg-primary' : 'bg-muted'}`}>
                           <module.icon className={`h-6 w-6 ${isCompleted ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
                         </div>
-                        {isCompleted ? (
-                          <CheckCircle2 className="h-6 w-6 text-primary" />
-                        ) : isCurrent ? (
-                          <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">Em andamento</span>
-                        ) : (
-                          <Circle className="h-6 w-6 text-muted-foreground/30" />
-                        )}
+                        {isCompleted ? <CheckCircle2 className="h-6 w-6 text-primary" /> : isCurrent ? <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded">Em andamento</span> : <Circle className="h-6 w-6 text-muted-foreground/30" />}
                       </div>
-                      <CardTitle className="font-display text-lg mt-3">
-                        Módulo {module.num}: {module.title}
-                      </CardTitle>
-                      <CardDescription className="line-clamp-2">
-                        {module.description}
-                      </CardDescription>
+                      <CardTitle className="font-display text-lg mt-3">Módulo {module.num}: {module.title}</CardTitle>
+                      <CardDescription className="line-clamp-2">{module.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -299,17 +302,12 @@ export default function Dashboard() {
               <Link key={bonus.id} href={bonus.path}>
                 <Card className="h-full transition-all hover:shadow-lg cursor-pointer hover:border-primary/50">
                   <CardHeader>
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
-                      <Gift className="h-5 w-5 text-primary" />
-                    </div>
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-2"><Gift className="h-5 w-5 text-primary" /></div>
                     <CardTitle className="font-display text-base">{bonus.title}</CardTitle>
                     <CardDescription className="text-sm">{bonus.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-0">
-                    <div className="flex items-center text-primary text-sm font-medium">
-                      Acessar bônus
-                      <ArrowRight className="h-4 w-4 ml-1" />
-                    </div>
+                    <div className="flex items-center text-primary text-sm font-medium">Acessar bônus<ArrowRight className="h-4 w-4 ml-1" /></div>
                   </CardContent>
                 </Card>
               </Link>
