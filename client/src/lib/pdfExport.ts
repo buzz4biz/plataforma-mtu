@@ -173,13 +173,13 @@ export async function exportConversationToPDF(messages: Message[], filename: str
     let yPosition = margin;
 
     // Header
-    doc.setFont('Playfair Display', 'bold');
+    doc.setFont('helvetica', 'bold');
     doc.setFontSize(20);
     doc.setTextColor(184, 134, 11); // Ouro
     doc.text('Assistente MTU™', margin, yPosition);
     yPosition += 10;
 
-    doc.setFont('Montserrat', 'normal');
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.setTextColor(50, 50, 50); // Cinza escuro
     doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, margin, yPosition);
@@ -191,7 +191,7 @@ export async function exportConversationToPDF(messages: Message[], filename: str
     yPosition += 8;
 
     // Mensagens
-    doc.setFont('Montserrat', 'normal');
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
 
     for (const message of messages) {
@@ -199,13 +199,13 @@ export async function exportConversationToPDF(messages: Message[], filename: str
       const label = isUser ? 'Você' : 'Assistente MTU™';
       
       // Label
-      doc.setFont('Montserrat', 'bold');
+      doc.setFont('helvetica', 'bold');
       doc.setTextColor(isUser ? 100 : 184, isUser ? 100 : 134, isUser ? 100 : 11);
       doc.text(label, margin, yPosition);
       yPosition += 5;
 
       // Conteúdo
-      doc.setFont('Montserrat', 'normal');
+      doc.setFont('helvetica', 'normal');
       doc.setTextColor(50, 50, 50);
       
       const lines = doc.splitTextToSize(message.content, contentWidth - 5);
@@ -221,7 +221,7 @@ export async function exportConversationToPDF(messages: Message[], filename: str
 
     // Footer
     yPosition = pageHeight - margin - 5;
-    doc.setFont('Montserrat', 'normal');
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.text('Gerado pelo Assistente MTU™ - Protocolo de Mecanismo Terapêutico Único', margin, yPosition);
