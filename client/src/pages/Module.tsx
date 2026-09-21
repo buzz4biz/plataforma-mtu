@@ -527,12 +527,6 @@ Seu mecanismo precisa estar ancorado em um problema específico e tangível. Nã
 
 > **Use o Assistente IA:** Peça para ele te ajudar a tornar sua resposta mais específica e tangível.
 
-### 📌 Perguntas de Apoio (Passo 1 — Contexto Básico)
-
-* Qual é sua especialidade terapêutica?
-* Há quanto tempo trabalha?
-* Qual é seu diferencial em relação a outros terapeutas?
-
 ---
 
 ## PASSO 2: Por Que Esse Problema Existe? Qual a Causa Raiz?
@@ -562,12 +556,6 @@ Mecanismos fortes não tratam sintomas - tratam causas. Você precisa ter clarez
 Use linguagem que conecta o problema a um **MECANISMO** (sistema nervoso, padrão cognitivo, resposta automática, memória, etc.). Isso já começa a criar seu mecanismo único.
 
 > **Use o Assistente IA:** Peça para ele te ajudar a identificar as camadas do problema.
-
-### 📌 Perguntas de Apoio (Passo 2 — Processo Único)
-
-* Como você trabalha com seus clientes?
-* Qual é seu método ou abordagem?
-* O que faz seu trabalho diferente?
 
 ---
 
@@ -605,12 +593,6 @@ Se você não tem um processo estruturado agora, **CRIE um** baseado no que voc�
 
 > **Use o Assistente IA:** Peça para ele te ajudar a estruturar e nomear cada fase do seu processo.
 
-### 📌 Perguntas de Apoio (Passo 3 — Resultados)
-
-* Que transformações você gera?
-* Quais são os resultados específicos?
-* Como seus clientes mudam?
-
 ---
 
 ## PASSO 4: O Que Torna Seu Processo Diferente do Que Outros Fazem?
@@ -641,12 +623,6 @@ Aqui você identifica seu diferencial específico. Não precisa ser revolucioná
 
 > **Use o Assistente IA:** Peça para ele te ajudar a identificar e articular seu diferencial único.
 
-### 📌 Perguntas de Apoio (Passo 4 — Gatilhos e Padrões)
-
-* O que dispara seu mecanismo?
-* Qual é o padrão que você identifica?
-* Como você sabe que funcionou?
-
 ---
 
 ## PASSO 5: Qual a Transformação Que Acontece? (Do Estado A para o Estado B)
@@ -675,12 +651,6 @@ Mecanismos fortes mostram transformação clara. De onde a pessoa sai e onde ela
 **DEPOIS:** Como a pessoa pensa, sente, age agora
 
 > **Use o Assistente IA:** Peça para ele te ajudar a descrever a transformação de forma tangível e específica.
-
-### 📌 Perguntas de Apoio (Passo 5 — Nomeação)
-
-* Como nomear seu mecanismo de forma clara?
-* O nome é memorável e diferenciador?
-* O nome comunica o resultado, não o processo?
 
 ---
 
@@ -715,12 +685,6 @@ Esta é a pergunta da **credibilidade**. Você precisa explicar a lógica/ciênc
 Use linguagem que seu cliente entenda, mas mantenha a sofisticação. Você quer soar científico SEM ser técnico demais.
 
 > **Use o Assistente IA:** Peça para ele te ajudar a articular a lógica do seu processo de forma clara e científica.
-
-### 📌 Perguntas de Apoio (Passo 6 — Validação)
-
-* Esse nome representa bem seu trabalho?
-* Seus clientes entendem o que você faz?
-* É diferente de concorrentes?
 
 ---
 
@@ -761,12 +725,6 @@ Dar um nome ao seu processo é **transformador**. Cria propriedade, memorabilida
 * ☐ Pode ser abreviado (MTR, PSA, etc.)
 
 > **Use o Assistente IA:** Peça para ele te ajudar a criar e refinar o nome do seu mecanismo.
-
-### 📌 Perguntas de Apoio (Passo 7 — Comunicação)
-
-* Como comunicar seu mecanismo para clientes?
-* Qual é a história de transformação?
-* Como posicionar seu preço?
 
 ---
 
