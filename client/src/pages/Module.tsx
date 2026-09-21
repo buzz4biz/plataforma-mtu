@@ -476,12 +476,12 @@ No Módulo 2, você vai construir a solução: **seu Mecanismo Terapêutico Úni
   "2": {
     title: "Extração do Mecanismo",
     subtitle: "Módulo 2",
-    description: "As 7 Perguntas-Chave Para Criar Seu Mecanismo Único",
+    description: "Os 7 Passos-Chave Para Criar Seu Mecanismo Único",
     duration: "120 min",
     lessons: [
       {
         id: "framework",
-        title: "Framework de Extração: As 7 Perguntas",
+        title: "Framework de Extração: Os 7 Passos",
         content: `## Framework de Extração do Mecanismo Terapêutico Único
 
 Este framework vai te guiar para extrair o mecanismo único que você já usa — mas nunca nomeou ou comunicou claramente.
@@ -502,9 +502,50 @@ Responda cada pergunta com **TOTAL honestidade e especificidade**. Respostas vag
 
 Use o **Assistente IA do Protocolo MTU** para responder essas perguntas de forma guiada. Ele vai te ajudar a extrair insights profundos e refinar suas respostas.
 
+### 🗂️ As 21 Perguntas-Guia dos 7 Passos (apoio rápido)
+
+Este é o mesmo Framework de 7 Passos que o Assistente IA usa para te guiar. Use estas 21 perguntas como um roteiro rápido de apoio antes ou durante os 7 passos detalhados abaixo — elas ajudam a organizar o raciocínio em blocos menores.
+
+**Passo 1 — Contexto Básico**
+* Qual é sua especialidade terapêutica?
+* Há quanto tempo trabalha?
+* Qual é seu diferencial em relação a outros terapeutas?
+
+**Passo 2 — Processo Único**
+* Como você trabalha com seus clientes?
+* Qual é seu método ou abordagem?
+* O que faz seu trabalho diferente?
+
+**Passo 3 — Resultados**
+* Que transformações você gera?
+* Quais são os resultados específicos?
+* Como seus clientes mudam?
+
+**Passo 4 — Gatilhos e Padrões**
+* O que dispara seu mecanismo?
+* Qual é o padrão que você identifica?
+* Como você sabe que funcionou?
+
+**Passo 5 — Nomeação**
+* Como nomear seu mecanismo de forma clara?
+* O nome é memorável e diferenciador?
+* O nome comunica o resultado, não o processo?
+
+**Passo 6 — Validação**
+* Esse nome representa bem seu trabalho?
+* Seus clientes entendem o que você faz?
+* É diferente de concorrentes?
+
+**Passo 7 — Comunicação**
+* Como comunicar seu mecanismo para clientes?
+* Qual é a história de transformação?
+* Como posicionar seu preço?
+
+> 💡 As 7 perguntas detalhadas abaixo aprofundam exatamente esses mesmos 7 passos, com exemplos práticos e checklists para cada uma.
+
 ---
 
-## PERGUNTA 1: Qual Problema Específico Você Resolve?
+## PASSO 1: Qual Problema Específico Você Resolve?
 
 ### O Que Esta Pergunta Revela
 
@@ -529,7 +570,7 @@ Seu mecanismo precisa estar ancorado em um problema específico e tangível. Nã
 
 ---
 
-## PERGUNTA 2: Por Que Esse Problema Existe? Qual a Causa Raiz?
+## PASSO 2: Por Que Esse Problema Existe? Qual a Causa Raiz?
 
 ### O Que Esta Pergunta Revela
 
@@ -559,7 +600,7 @@ Use linguagem que conecta o problema a um **MECANISMO** (sistema nervoso, padrã
 
 ---
 
-## PERGUNTA 3: Qual Seu Processo? Quais as Fases/Etapas do Seu Trabalho?
+## PASSO 3: Qual Seu Processo? Quais as Fases/Etapas do Seu Trabalho?
 
 ### O Que Esta Pergunta Revela
 
@@ -595,7 +636,7 @@ Se você não tem um processo estruturado agora, **CRIE um** baseado no que voc�
 
 ---
 
-## PERGUNTA 4: O Que Torna Seu Processo Diferente do Que Outros Fazem?
+## PASSO 4: O Que Torna Seu Processo Diferente do Que Outros Fazem?
 
 ### O Que Esta Pergunta Revela
 
@@ -625,7 +666,7 @@ Aqui você identifica seu diferencial específico. Não precisa ser revolucioná
 
 ---
 
-## PERGUNTA 5: Qual a Transformação Que Acontece? (Do Estado A para o Estado B)
+## PASSO 5: Qual a Transformação Que Acontece? (Do Estado A para o Estado B)
 
 ### O Que Esta Pergunta Revela
 
@@ -654,7 +695,7 @@ Mecanismos fortes mostram transformação clara. De onde a pessoa sai e onde ela
 
 ---
 
-## PERGUNTA 6: Por Que Seu Processo Funciona? Qual a Lógica Por Trás?
+## PASSO 6: Por Que Seu Processo Funciona? Qual a Lógica Por Trás?
 
 ### O Que Esta Pergunta Revela
 
@@ -688,7 +729,7 @@ Use linguagem que seu cliente entenda, mas mantenha a sofisticação. Você quer
 
 ---
 
-## PERGUNTA 7: Como Você Nomearia Seu Método/Processo?
+## PASSO 7: Como Você Nomearia Seu Método/Processo?
 
 ### O Que Esta Pergunta Revela
 
@@ -730,7 +771,7 @@ Dar um nome ao seu processo é **transformador**. Cria propriedade, memorabilida
 
 ## SÍNTESE: Monte Seu Mecanismo Único Completo
 
-Agora que você respondeu as 7 perguntas, use esta fórmula para montar seu Mecanismo Terapêutico Único completo:
+Agora que você percorreu os 7 passos, use esta fórmula para montar seu Mecanismo Terapêutico Único completo:
 
 ### Fórmula do Mecanismo Único
 
@@ -761,7 +802,7 @@ Continue para as próximas lições para:
 
 > **Use o Assistente IA:** Peça para ele te ajudar a refinar e validar seu mecanismo completo.`,
         exercise: {
-          title: "Complete o Framework de 7 Perguntas",
+          title: "Complete o Framework de 7 Passos",
           description: "Responda todas as perguntas abaixo para extrair seu Mecanismo Terapêutico Único. Use o Assistente IA para te ajudar a refinar suas respostas.",
           type: "textarea",
           items: []
