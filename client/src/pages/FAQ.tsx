@@ -20,11 +20,7 @@ const FAQ_ITEMS: FAQItem[] = [
   },
   {
     question: "Como funciona o Framework de 7 Passos?",
-    answer: "O Framework de 7 Passos é uma estrutura prática para extrair seu mecanismo único. Os sete passos são Contexto Básico, Processo Único, Resultados, Gatilhos e Padrões, Nomeação, Validação e Comunicação. Ao todo, os sete passos reúnem 21 perguntas estratégicas — três em cada passo — para revelar e organizar seu diferencial.",
-  },
-  {
-    question: "Os 7 passos têm quantas perguntas?",
-    answer: "O framework tem 7 passos que totalizam 21 perguntas. Cada passo aborda uma dimensão do seu mecanismo e contém três perguntas orientadoras para tornar seu processo visível, nomeável e comunicável.",
+    answer: "O Framework de 7 Passos é uma estrutura prática para extrair seu mecanismo único. Os sete passos são Contexto Básico, Processo Único, Resultados, Gatilhos e Padrões, Nomeação, Validação e Comunicação. Cada passo constrói sobre o anterior para revelar e organizar seu diferencial.",
   },
   {
     question: "Quanto tempo leva para extrair meu mecanismo?",
@@ -129,7 +125,7 @@ export default function FAQ() {
           <div className="mt-12 p-6 rounded-2xl bg-primary/5 border border-primary/20 text-center">
             <h3 className="font-semibold text-foreground mb-2">Pronto para começar?</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Use o Assistente MTU™ para percorrer os 7 passos e responder às 21 perguntas do seu mecanismo.
+              Use o Assistente MTU™ para percorrer os 7 passos e extrair o nome do seu mecanismo.
             </p>
             <Link href="/assistente">
               <Button className="rounded-lg">Ir para o Chat</Button>
